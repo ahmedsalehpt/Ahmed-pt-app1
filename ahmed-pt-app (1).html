@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Ahmed PT">
+<meta name="theme-color" content="#07070e">
+<title>Ahmed Personal Training</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--bg:#07070e;--c1:#0f1117;--c2:#161b26;--bdr:rgba(255,255,255,.08);--tx:#e8eaf0;--m1:#8892a4;--m2:#4a5568;--m3:#2d3748;--green:#10b981;--blue:#6366f1;--pink:#ec4899;--amber:#f59e0b;--red:#ef4444;--purple:#8b5cf6;--acc:#6366f1}
+html,body{height:100%;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+input,textarea,select,button{font-family:inherit;-webkit-appearance:none;appearance:none;outline:none}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+button{cursor:pointer;border:none;background:none;color:inherit}
+textarea{resize:none}
+#app{min-height:100vh;padding-bottom:80px}
+/* LAYOUT */
+.page{max-width:640px;margin:0 auto;padding:16px}
+.hdr{position:sticky;top:0;z-index:90;background:rgba(7,7,14,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);padding:14px 16px 0}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.hdr-title{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#fff}
+.hdr-sub{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:3px}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-bottom:0}
+.tabs::-webkit-scrollbar{display:none}
+.t{padding:8px 14px;border-radius:8px 8px 0 0;font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--m1);white-space:nowrap;border:1px solid transparent;border-bottom:none;cursor:pointer}
+.t.on{background:var(--c1);border-color:var(--bdr);color:#fff}
+/* BOTTOM NAV */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:rgba(7,7,14,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--bdr);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:100}
+.nb{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;letter-spacing:.3px;color:var(--m2);position:relative;text-transform:uppercase}
+.nb.on{color:var(--acc)}
+.nb-icon{font-size:20px;line-height:1}
+.nb-badge{position:absolute;top:6px;right:calc(50% - 18px);background:var(--red);color:#fff;font-size:8px;font-weight:800;min-width:15px;height:15px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+/* CARDS */
+.card{background:var(--c1);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.card-body{padding:14px}
+/* FORMS */
+.lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--m2);margin-bottom:5px}
+.inp{width:100%;background:var(--c2);border:1.5px solid var(--bdr);border-radius:10px;color:var(--tx);font-size:15px;padding:11px 13px;transition:border-color .15s}
+.inp:focus{border-color:var(--acc)}
+.sel{width:100%;background:var(--c2);border:1.5px solid var(--bdr);border-radius:10px;color:var(--tx);font-size:14px;padding:11px 13px}
+.row{margin-bottom:14px}
+.btn{display:block;width:100%;padding:13px;border-radius:11px;font-size:14px;font-weight:800;letter-spacing:.5px;color:#fff;text-align:center;cursor:pointer;border:none}
+.btn-accent{background:var(--acc)}
+.btn-green{background:var(--green)}
+.btn-ghost{background:transparent;border:1.5px solid var(--bdr);color:var(--m1)}
+.btn-red{background:var(--red)}
+.btn-sm{padding:7px 14px;font-size:11px;font-weight:700;border-radius:8px}
+/* STAT GRID */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.scard{background:var(--c1);border:1px solid var(--bdr);border-radius:14px;padding:14px}
+.sval{font-size:30px;font-weight:900;line-height:1;margin-bottom:3px}
+.slbl{font-size:10px;color:var(--m1);letter-spacing:.5px}
+.ssub{font-size:9px;color:var(--m2);margin-top:2px}
+/* CLIENT CARD */
+.ccard{background:var(--c1);border:1px solid var(--bdr);border-radius:14px;padding:13px;margin-bottom:8px;cursor:pointer;transition:border-color .15s}
+.ccard:active{border-color:rgba(255,255,255,.2)}
+.cname{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
+.cmeta{font-size:11px;color:var(--m1);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+/* PILLS */
+.pill{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.pill-green{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:#34d399}
+.pill-amber{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--amber)}
+.pill-red{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171}
+.pill-blue{background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);color:#818cf8}
+.pill-purple{background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.25);color:#a78bfa}
+.pill-pink{background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.25);color:#f472b6}
+/* EXERCISE */
+.ex-card{background:var(--c1);border:1px solid var(--bdr);border-radius:12px;margin-bottom:8px;overflow:hidden}
+.ex-card.done{background:rgba(16,185,129,.04);border-color:rgba(16,185,129,.2)}
+.ex-hdr{padding:11px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ex-name{font-weight:700;font-size:13px;color:#fff;margin-bottom:3px}
+.ex-card.done .ex-name{color:var(--m2);text-decoration:line-through}
+.ex-info{font-size:11px;color:var(--m1)}
+.ex-cue{font-size:11px;color:var(--m2);line-height:1.6;padding:0 13px 10px;display:none}
+.ex-cue.show{display:block}
+/* SET DOTS */
+.sets{display:flex;gap:6px;padding:0 13px 11px;flex-wrap:wrap}
+.sdot{width:36px;height:36px;border-radius:50%;border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--m2);cursor:pointer;flex-direction:column;gap:1px;transition:all .15s}
+.sdot.done{color:#fff}
+.sdot.active{border-style:dashed}
+.sdot-w{font-size:8px;font-weight:700}
+/* LOG PANEL */
+.lpanel{padding:12px 13px 14px;background:rgba(0,0,0,.3);border-top:1px solid var(--bdr)}
+.lpanel-title{font-size:11px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rpe-btns{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.rpe-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--bdr);background:var(--c2);font-size:11px;font-weight:700;color:var(--m1);cursor:pointer}
+.log-actions{display:flex;gap:6px}
+.prev-data{font-size:10px;color:var(--m2);padding:6px 10px;background:var(--c2);border-radius:8px;margin-bottom:8px}
+/* SESSIONS */
+.sess-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--bdr)}
+.sess-item:last-child{border-bottom:none}
+.sess-time{min-width:52px;text-align:center}
+.sess-time-h{font-size:13px;font-weight:700;color:#fff}
+.sess-time-d{font-size:10px;color:var(--m1);margin-top:1px}
+.sess-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sess-info{flex:1}
+.sess-name{font-size:13px;font-weight:600;color:#fff}
+.sess-meta{font-size:10px;color:var(--m1);margin-top:2px}
+/* PAYMENT */
+.pay-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.pay-item:last-child{border-bottom:none}
+.pay-amt{font-size:15px;font-weight:800;color:var(--green)}
+.pay-info{font-size:10px;color:var(--m1);margin-top:2px}
+/* PROGRESS */
+.pr-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.pr-bar-bg{flex:1;height:8px;background:var(--m3);border-radius:4px;overflow:hidden}
+.pr-bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.pr-bar-val{font-size:10px;color:var(--m1);min-width:50px;text-align:right}
+.pr-tag{font-size:8px;padding:1px 5px;border-radius:5px;background:rgba(245,158,11,.15);color:var(--amber);font-weight:700;margin-left:4px;border:1px solid rgba(245,158,11,.2)}
+/* STREAK */
+.streak-grid{display:flex;gap:4px;flex-wrap:wrap}
+.sday{width:34px;height:34px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.sday.done{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.3)}
+.sday.today{background:rgba(245,158,11,.35);border:1.5px solid var(--amber)}
+.sday.miss{background:var(--c2);border:1px solid var(--bdr)}
+/* CHAT */
+.chat-wrap{max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.chat-msg{max-width:80%;display:flex;flex-direction:column}
+.from-me{align-self:flex-end}
+.from-them{align-self:flex-start}
+.bubble{padding:9px 12px;border-radius:12px;font-size:13px;line-height:1.5}
+.from-me .bubble{background:var(--acc);color:#fff;border-bottom-right-radius:4px}
+.from-them .bubble{background:var(--c2);color:var(--tx);border-bottom-left-radius:4px}
+.chat-time{font-size:9px;color:var(--m2);margin-top:3px}
+.from-me .chat-time{align-self:flex-end}
+.from-them .chat-time{align-self:flex-start}
+.chat-input{display:flex;gap:8px;align-items:flex-end;padding-top:10px;border-top:1px solid var(--bdr);margin-top:8px}
+.chat-ta{flex:1;background:var(--c2);border:1.5px solid var(--bdr);border-radius:12px;color:var(--tx);font-size:13px;padding:9px 12px;min-height:40px;max-height:100px;line-height:1.5}
+.chat-send{width:40px;height:40px;border-radius:12px;background:var(--acc);display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;flex-shrink:0}
+/* ALERT */
+.alert{padding:12px 14px;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.alert-red{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2)}
+.alert-amber{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2)}
+.alert-green{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2)}
+.alert-icon{font-size:20px;flex-shrink:0}
+.alert-text{flex:1}
+.alert-title{font-weight:700;font-size:13px;margin-bottom:2px}
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal-box{background:var(--c1);border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:18px;font-weight:800;color:#fff;margin-bottom:18px}
+/* TOAST */
+.toast-bar{position:fixed;top:0;left:0;right:0;z-index:999;padding:8px 16px;font-size:11px;font-weight:700;text-align:center;display:none;letter-spacing:.5px}
+.t-ok{background:rgba(16,185,129,.95);color:#fff}
+.t-err{background:rgba(239,68,68,.95);color:#fff}
+.t-info{background:rgba(99,102,241,.95);color:#fff}
+/* SECTION */
+.sect{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--m2);margin:18px 0 10px}
+.sect:first-child{margin-top:0}
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--m2);font-size:13px}
+/* ACCOUNT BIG */
+.big-balance{text-align:center;padding:24px 16px;background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(99,102,241,.05));border:1px solid rgba(16,185,129,.2);border-radius:16px;margin-bottom:16px}
+.bal-num{font-size:72px;font-weight:900;line-height:1;margin-bottom:6px}
+.bal-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--m1)}
+.bal-msg{font-size:12px;color:var(--m1);margin-top:8px}
+/* ALT PANEL */
+.alt-wrap{padding:10px 13px 12px;background:rgba(245,158,11,.04);border-top:1px solid rgba(245,158,11,.12)}
+.alt-lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;color:var(--amber);margin-bottom:7px}
+.alt-item{display:block;width:100%;text-align:left;padding:8px 11px;background:var(--c2);border:1px solid var(--bdr);border-radius:9px;color:var(--tx);font-size:12px;font-weight:600;margin-bottom:5px;cursor:pointer}
+.alt-item:active{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3)}
+/* WKBANNER */
+.wk-banner{padding:8px 13px;border-left:3px solid var(--acc);background:rgba(99,102,241,.05);border-radius:0 8px 8px 0;margin-bottom:12px}
+.wk-name{font-size:11px;font-weight:800;letter-spacing:2px;color:var(--acc)}
+.wk-note{font-size:10px;color:var(--m1);margin-top:2px;line-height:1.5}
+/* PROG COMPARE */
+.comp-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.comp-label{font-size:11px;font-weight:600;min-width:140px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comp-bar-wrap{flex:1}
+/* SYNC */
+.sync-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.sync-on{background:var(--green)}
+.sync-off{background:var(--amber)}
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{width:100%;max-width:400px}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-icon{font-size:48px;margin-bottom:12px}
+.login-brand{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:6px}
+.login-title{font-size:32px;font-weight:900;color:#fff;letter-spacing:-1px}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.role-card{padding:16px;border-radius:14px;border:2px solid var(--bdr);background:var(--c1);cursor:pointer;text-align:center;transition:all .15s}
+.role-card.on{border-color:var(--acc);background:rgba(99,102,241,.08)}
+.role-card-icon{font-size:28px;margin-bottom:6px}
+.role-card-name{font-size:13px;font-weight:700;color:#fff}
+.role-card-desc{font-size:10px;color:var(--m1);margin-top:3px}
+/* ERR/OK messages */
+.err-msg{font-size:11px;color:#f87171;padding:8px 11px;background:rgba(239,68,68,.08);border-radius:8px;margin-bottom:10px;border:1px solid rgba(239,68,68,.2)}
+.ok-msg{font-size:11px;color:#34d399;padding:8px 11px;background:rgba(16,185,129,.08);border-radius:8px;margin-bottom:10px;border:1px solid rgba(16,185,129,.2)}
+</style>
+</head>
+<body>
+<div id="toast" class="toast-bar"></div>
+<div id="modal"></div>
+<div id="app">
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;background:#07070e">
+<div style="font-size:9px;letter-spacing:3px;color:#ec4899;font-weight:700">AHMED PERSONAL TRAINING</div>
+<div style="font-size:26px;font-weight:900;color:#fff">Loading...</div>
+</div>
+</div>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════
+var DB = {
+  get: function(k) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch(e) { return null; } },
+  set: function(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} },
+  del: function(k) { try { localStorage.removeItem(k); } catch(e) {} }
+};
+
+// ═══════════════════════════════════════════
+// FIREBASE (background only - app works without it)
+// ═══════════════════════════════════════════
+var db = null, fbReady = false, fbListeners = [];
+var FB_CFG = {
+  apiKey: "AIzaSyCQetxNU1DGqoI4momwcAIjOgl9qA2jmQA",
+  authDomain: "ahmed-pt-app.firebaseapp.com",
+  databaseURL: "https://ahmed-pt-app-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "ahmed-pt-app"
+};
+
+function fbInit() {
+  try {
+    if (typeof firebase === 'undefined' || !firebase.database) return false;
+    if (firebase.apps.length) db = firebase.database(firebase.apps[0]);
+    else { firebase.initializeApp(FB_CFG); db = firebase.database(); }
+    fbReady = true;
+    return true;
+  } catch(e) { return false; }
+}
+
+function fbSet(path, val) { if (db) db.ref(path).set(val).catch(function(){}); }
+function fbUpd(path, val) { if (db) db.ref(path).update(val).catch(function(){}); }
+function fbPush(path, val) { if (db) { return db.ref(path).push(val).catch(function(){}); } }
+function fbGet(path, cb) {
+  if (!db) { cb(null); return; }
+  db.ref(path).once('value').then(function(s) { cb(s.val()); }).catch(function() { cb(null); });
+}
+function fbListen(path, cb) {
+  if (!db) return;
+  var ref = db.ref(path);
+  ref.on('value', function(s) { cb(s.val()); });
+  fbListeners.push(ref);
+}
+function fbStopAll() { fbListeners.forEach(function(r) { r.off(); }); fbListeners = []; }
+
+// Load Firebase in background
+function loadFirebase() {
+  var urls = [
+    ['https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js', 'https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js'],
+    ['https://cdn.jsdelivr.net/npm/firebase@8.10.1/firebase-app.min.js', 'https://cdn.jsdelivr.net/npm/firebase@8.10.1/firebase-database.min.js']
+  ];
+  var i = 0;
+  function tryNext() {
+    if (i >= urls.length) return;
+    var pair = urls[i++];
+    var s1 = document.createElement('script'); s1.src = pair[0]; s1.async = true;
+    s1.onload = function() {
+      var s2 = document.createElement('script'); s2.src = pair[1]; s2.async = true;
+      s2.onload = function() {
+        if (fbInit()) { onFbReady(); } else { tryNext(); }
+      };
+      s2.onerror = tryNext;
+      document.head.appendChild(s2);
+    };
+    s1.onerror = tryNext;
+    document.head.appendChild(s1);
+  }
+  tryNext();
+}
+
+function onFbReady() {
+  fbReady = true;
+  updateSyncDot();
+  // If trainer is logged in, set up listeners
+  if (S.role === 'trainer') {
+    setupTrainerSync();
+  } else if (S.role === 'client' && S.cid) {
+    setupClientSync(S.cid);
+  }
+}
+
+function updateSyncDot() {
+  var dots = document.querySelectorAll('.sync-dot');
+  dots.forEach(function(d) {
+    d.className = fbReady ? 'sync-dot sync-on' : 'sync-dot sync-off';
+    d.title = fbReady ? 'Live sync active' : 'Offline';
+  });
+}
+
+
+var CURRENCIES = ['£','$','€','₺','AED','SAR','CHF','CAD','AUD'];
+
+function getCurrency(cid) {
+  var id = cid || S.vCli || S.cid;
+  if (!id) return '£';
+  var c = id === S.cid ? (DB.get('cp_' + id)||{}) : (S.clients[id]||{});
+  return c.currency || '£';
+}
+
+// ═══════════════════════════════════════════
+// PROGRAM TEMPLATES
+// ═══════════════════════════════════════════
+var TEMPLATES = {"mens_4day": {"name": "Elite Protocol \u2014 4 Day", "days": [{"tag": "Day 1", "title": "Upper A", "accent": "#ef4444", "ex": [{"n": "Barbell Bench Press", "t": "Compound", "m": "Chest", "r": "5-7", "sets": 4, "note": "Bar to lower chest, 75deg elbows. No full lockout.", "alt": ["DB Bench Press", "Machine Chest Press", "Push-Ups weighted"]}, {"n": "Incline DB Press", "t": "Compound", "m": "Upper Chest", "r": "8-10", "sets": 4, "note": "30-45 incline. Full pec stretch at bottom.", "alt": ["Incline Barbell Press", "Incline Cable Press"]}, {"n": "Cable Fly Low to High", "t": "Isolation", "m": "Chest", "r": "12-15", "sets": 3, "note": "Long-length loading at bottom is the growth signal.", "alt": ["Pec Deck Fly", "DB Fly"]}, {"n": "Bent-Over Barbell Row", "t": "Compound", "m": "Back", "r": "6-8", "sets": 4, "note": "Overhand, 45deg hinge, row to navel.", "alt": ["Pendlay Row", "T-Bar Row"]}, {"n": "Chest-Supported DB Row", "t": "Compound", "m": "Mid Back", "r": "10-12", "sets": 3, "note": "Arms hang FULLY at bottom. Row to hip.", "alt": ["Cable Row", "Machine Row"]}, {"n": "Seated DB Overhead Press", "t": "Compound", "m": "Shoulders", "r": "8-10", "sets": 3, "note": "Just outside shoulders. No lockout.", "alt": ["Barbell OHP", "Machine Press"]}, {"n": "Cable Lateral Raise", "t": "Isolation", "m": "Lateral Delt", "r": "15-20", "sets": 3, "note": "Lead with elbow. Cable keeps tension at bottom.", "alt": ["DB Lateral Raise", "Machine Lateral"]}, {"n": "Overhead Cable Tricep Ext", "t": "Isolation", "m": "Triceps", "r": "12-15", "sets": 3, "note": "Overhead = 3x more long-head growth.", "alt": ["Overhead DB Ext", "Skull Crusher"]}, {"n": "Incline DB Curl", "t": "Isolation", "m": "Biceps", "r": "10-12", "sets": 3, "note": "Shoulder behind hip = full bicep stretch.", "alt": ["Cable Curl", "Preacher Curl"]}, {"n": "Cable Crunch", "t": "Abs", "m": "Core", "r": "15-20", "sets": 3, "note": "Round spine \u2014 crunch DOWN. Add weight weekly.", "alt": ["Decline Crunch", "Ab Wheel"]}]}, {"tag": "Day 2", "title": "Lower A", "accent": "#10b981", "ex": [{"n": "Barbell Back Squat", "t": "Compound", "m": "Quads + Glutes", "r": "5-7", "sets": 4, "note": "Below parallel every rep. Depth is everything.", "alt": ["Goblet Squat", "Smith Machine Squat"]}, {"n": "Leg Press", "t": "Compound", "m": "Quads", "r": "8-10", "sets": 3, "note": "Mid foot, heels on platform. Full ROM.", "alt": ["Bulgarian Split Squat", "Cyclist Squat"]}, {"n": "Bulgarian Split Squat", "t": "Unilateral", "m": "Quads + Glutes", "r": "10-12", "sets": 3, "note": "Rear foot elevated 16 inches.", "alt": ["Reverse Lunge", "Step-Up"]}, {"n": "Romanian Deadlift", "t": "Compound", "m": "Hamstrings", "r": "10-12", "sets": 3, "note": "Hip hinge, push hips BACK. Hamstring stretch at bottom.", "alt": ["Stiff-Leg Deadlift", "Good Morning"]}, {"n": "Seated Leg Curl", "t": "Isolation", "m": "Hamstrings", "r": "12-15", "sets": 3, "note": "Seated beats lying \u2014 hip flexed = longer length = more growth.", "alt": ["Lying Leg Curl", "Nordic Curl"]}, {"n": "Leg Extension", "t": "Isolation", "m": "Quads", "r": "12-15", "sets": 3, "note": "Full extension, 1s hold, 3s eccentric.", "alt": ["Spanish Squat", "Sissy Squat"]}, {"n": "Standing Calf Raise", "t": "Isolation", "m": "Gastrocnemius", "r": "15-20", "sets": 4, "note": "Full stretch \u2014 heel BELOW platform. Pause 1s.", "alt": ["Leg Press Calf Raise", "Single-Leg Calf"]}, {"n": "Ab Wheel Rollout", "t": "Abs", "m": "Core", "r": "10-12", "sets": 3, "note": "From knees. Superset with leg raises.", "alt": ["Cable Rollout", "Plank"]}]}, {"tag": "Day 3", "title": "Upper B", "accent": "#3b82f6", "ex": [{"n": "Weighted Pull-Up", "t": "Compound", "m": "Lats", "r": "5-8", "sets": 4, "note": "Full hang, chest to bar.", "alt": ["Lat Pulldown", "Assisted Pull-Up"]}, {"n": "Seated Cable Row", "t": "Compound", "m": "Back", "r": "8-10", "sets": 4, "note": "Full stretch forward. Squeeze scapulae at end.", "alt": ["DB Row", "Machine Row"]}, {"n": "Face Pull", "t": "Isolation", "m": "Rear Delt", "r": "15-20", "sets": 4, "note": "NON-NEGOTIABLE. Rope to face, elbows high. Every upper session.", "alt": ["Band Pull-Apart", "Prone Y-Raise"]}, {"n": "Incline DB Press", "t": "Compound", "m": "Upper Chest", "r": "10-12", "sets": 3, "note": "Second chest session. Focus on stretch.", "alt": ["Incline Machine Press", "Cable Press"]}, {"n": "Cable Crossover High to Low", "t": "Isolation", "m": "Chest", "r": "12-15", "sets": 3, "note": "High-to-low hits lower chest fibres.", "alt": ["Decline DB Fly", "Dips"]}, {"n": "Cable Lateral Raise", "t": "Isolation", "m": "Lateral Delt", "r": "15-20", "sets": 3, "note": "Second delt session.", "alt": ["DB Lateral Raise", "Machine Lateral"]}, {"n": "EZ-Bar Curl", "t": "Compound", "m": "Biceps", "r": "8-10", "sets": 3, "note": "No swinging. Full range.", "alt": ["Barbell Curl", "DB Curl"]}, {"n": "Skull Crusher", "t": "Isolation", "m": "Triceps", "r": "8-10", "sets": 3, "note": "Lower to forehead, elbows locked.", "alt": ["DB Skull Crusher", "Close-Grip Bench"]}]}, {"tag": "Day 4", "title": "Lower B", "accent": "#a855f7", "ex": [{"n": "Romanian Deadlift Heavy", "t": "Compound", "m": "Hamstrings + Glutes", "r": "6-8", "sets": 4, "note": "Heavier than Day 2. Hamstring stretch is the stimulus.", "alt": ["Sumo Deadlift", "Trap Bar Deadlift"]}, {"n": "Hip Thrust Barbell", "t": "Compound", "m": "Glutes", "r": "10-12", "sets": 3, "note": "Shoulders on bench. Squeeze HARD at top.", "alt": ["DB Hip Thrust", "Single-Leg Hip Thrust"]}, {"n": "Leg Curl Seated", "t": "Isolation", "m": "Hamstrings", "r": "10-12", "sets": 4, "note": "Second hamstring session. Slow eccentric.", "alt": ["Lying Leg Curl", "Nordic Curl"]}, {"n": "Hack Squat", "t": "Compound", "m": "Quads", "r": "10-12", "sets": 3, "note": "Quad secondary volume. Ensures 2x frequency.", "alt": ["Front Squat", "Leg Press"]}, {"n": "Good Morning", "t": "Compound", "m": "Hams + Erectors", "r": "12-15", "sets": 3, "note": "Bar on upper back, hip hinge, soft knees.", "alt": ["Back Extension", "Cable Pull-Through"]}, {"n": "Standing Calf Raise", "t": "Isolation", "m": "Gastrocnemius", "r": "15-20", "sets": 4, "note": "Full stretch, pause 1s, full plantarflexion.", "alt": ["Single-Leg Calf", "Leg Press Calf"]}, {"n": "Plank Pallof Press", "t": "Abs", "m": "Core", "r": "45s+12", "sets": 3, "note": "Plank 45s then Pallof press x12. Anti-rotation.", "alt": ["Dead Bug", "Copenhagen Plank"]}, {"n": "Metabolic Finisher", "t": "Finisher", "m": "Full Body", "r": "3 rounds", "sets": 3, "note": "Jump Rope 60s, Mountain Climbers 30s, Burpees x10. Mandatory.", "alt": ["Row 500m, KB Swings x20, Box Jumps x10"]}]}]}, "womens_3day": {"name": "Women's Protocol \u2014 3 Day", "days": [{"tag": "Day 1", "title": "Lower A", "accent": "#ec4899", "ex": [{"n": "Hip Thrust Barbell", "t": "Compound", "m": "Glutes", "r": "10-12", "sets": 4, "note": "Shoulders on bench, barbell padded. Squeeze HARD for 1s.", "alt": ["DB Hip Thrust", "Smith Machine Hip Thrust"]}, {"n": "Bulgarian Split Squat", "t": "Unilateral", "m": "Glutes + Quads", "r": "10-12", "sets": 3, "note": "LONG stride for glute emphasis.", "alt": ["Reverse Lunge", "Step-Up"]}, {"n": "Barbell Squat", "t": "Compound", "m": "Quads + Glutes", "r": "8-10", "sets": 3, "note": "Feet slightly wider, toes out for glutes.", "alt": ["Goblet Squat", "Smith Machine Squat"]}, {"n": "Romanian Deadlift", "t": "Compound", "m": "Hamstrings + Glutes", "r": "10-12", "sets": 3, "note": "Hip hinge. Push hips BACK. Glute stretch at bottom.", "alt": ["Good Morning", "Cable Pull-Through"]}, {"n": "Cable Kickback", "t": "Isolation", "m": "Glutes", "r": "15-20", "sets": 3, "note": "Drive leg back and UP. Squeeze glute at full extension for 1s.", "alt": ["Band Kickback", "Donkey Kick"]}, {"n": "Leg Press High Foot", "t": "Compound", "m": "Glutes + Quads", "r": "12-15", "sets": 3, "note": "Feet HIGH on platform. Shifts emphasis to glutes.", "alt": ["Sumo Goblet Squat", "Step-Up"]}, {"n": "Standing Calf Raise", "t": "Isolation", "m": "Gastrocnemius", "r": "15-20", "sets": 3, "note": "Full stretch. Heel BELOW platform. Pause 1s.", "alt": ["Single-Leg Calf", "Leg Press Calf"]}]}, {"tag": "Day 2", "title": "Upper", "accent": "#8b5cf6", "ex": [{"n": "Lat Pulldown Wide", "t": "Compound", "m": "Lats", "r": "8-12", "sets": 4, "note": "Full hang at top. Wide grip builds V-taper.", "alt": ["Pull-Up Assisted", "Close-Grip Pulldown"]}, {"n": "Seated Cable Row", "t": "Compound", "m": "Back", "r": "10-12", "sets": 3, "note": "Full stretch forward. Squeeze scapulae.", "alt": ["DB Row", "Machine Row"]}, {"n": "Single-Arm DB Row", "t": "Unilateral", "m": "Mid Back", "r": "12-15", "sets": 3, "note": "Knee on bench, row to hip. Full hang at bottom.", "alt": ["Single-Arm Cable Row", "TRX Row"]}, {"n": "Face Pull", "t": "Isolation", "m": "Rear Delt", "r": "15-20", "sets": 3, "note": "NON-NEGOTIABLE. Elbows HIGH. Corrects rounded posture.", "alt": ["Band Pull-Apart", "Prone Y-Raise"]}, {"n": "DB Shoulder Press", "t": "Compound", "m": "Shoulders", "r": "10-12", "sets": 3, "note": "Shoulder width makes waist look smaller.", "alt": ["Machine Shoulder Press", "Arnold Press"]}, {"n": "Cable Lateral Raise", "t": "Isolation", "m": "Lateral Delt", "r": "15-20", "sets": 3, "note": "Cable beats dumbbell for lateral delt.", "alt": ["DB Lateral Raise", "Machine Lateral"]}, {"n": "Incline DB Press", "t": "Compound", "m": "Upper Chest", "r": "10-12", "sets": 3, "note": "Full stretch at bottom, squeeze at top.", "alt": ["Incline Machine Press", "Cable Fly"]}, {"n": "Overhead Cable Tricep Ext", "t": "Isolation", "m": "Triceps", "r": "12-15", "sets": 2, "note": "Overhead = long-head stretch = more growth.", "alt": ["Overhead DB Ext", "Skull Crusher"]}, {"n": "Cable Curl", "t": "Isolation", "m": "Biceps", "r": "12-15", "sets": 2, "note": "Full supination at top.", "alt": ["DB Curl", "EZ-Bar Curl"]}]}, {"tag": "Day 3", "title": "Lower B", "accent": "#10b981", "ex": [{"n": "Romanian Deadlift Heavy", "t": "Compound", "m": "Hamstrings + Glutes", "r": "6-8", "sets": 4, "note": "Heavier than Day 1. Full stretch at bottom.", "alt": ["Sumo Deadlift", "Good Morning"]}, {"n": "Hip Thrust Pause", "t": "Compound", "m": "Glutes", "r": "12-15", "sets": 3, "note": "2-second PAUSE at top. More time under tension = more growth.", "alt": ["Banded Hip Thrust", "Single-Leg Hip Thrust"]}, {"n": "Sumo Deadlift", "t": "Compound", "m": "Glutes + Inner Thigh", "r": "8-10", "sets": 3, "note": "Wide stance, toes out. Shifts emphasis to glutes.", "alt": ["Sumo Goblet Squat", "Wide-Stance Leg Press"]}, {"n": "Nordic Curl", "t": "Isolation", "m": "Hamstrings", "r": "10-12", "sets": 3, "note": "Nordic if available. Seated leg curl otherwise.", "alt": ["Seated Leg Curl", "Swiss Ball Curl"]}, {"n": "Reverse Lunge Deficit", "t": "Unilateral", "m": "Glutes + Hams", "r": "12 each", "sets": 3, "note": "Step back from small platform. Loads glute at longer length.", "alt": ["Walking Lunge", "Reverse Lunge flat"]}, {"n": "Leg Extension", "t": "Isolation", "m": "Quads", "r": "15-20", "sets": 3, "note": "Quad balance and knee health. 1s hold, 3s eccentric.", "alt": ["Spanish Squat", "Terminal Knee Ext"]}, {"n": "Cable Pull-Through", "t": "Isolation", "m": "Glutes + Hams", "r": "15-20", "sets": 3, "note": "Cable between legs. Hip hinge. Maintains glute tension.", "alt": ["KB Swing", "Band Pull-Through"]}, {"n": "Ab Wheel Rollout", "t": "Abs", "m": "Core", "r": "10-12", "sets": 3, "note": "From knees. Superset with glute bridges.", "alt": ["Cable Rollout", "Dead Bug"]}, {"n": "Metabolic Finisher", "t": "Finisher", "m": "Full Body", "r": "3 rounds", "sets": 3, "note": "Jump Rope 45s, Squat Jumps x15, Hip Thrust x20 BW. Mandatory.", "alt": ["Row 400m, KB Swings x15, Glute Bridge Jumps x10"]}]}]}};
+
+// ═══════════════════════════════════════════
+// WEEK LABELS
+// ═══════════════════════════════════════════
+var WK_LABELS = {
+  1: {l:'FOUNDATION', c:'#60a5fa', n:'2-3 RIR every set. Establish patterns. Full ROM.'},
+  2: {l:'VOLUME', c:'#34d399', n:'+1 set on compounds. +2.5-5kg where form is solid.'},
+  3: {l:'INTENSITY', c:'#f59e0b', n:'+5% load on compounds. 3-second eccentric every rep.'},
+  4: {l:'OVERLOAD', c:'#f87171', n:'Drop set on last isolation. 0-1 RIR. Deload next week.'}
+};
+
+// ═══════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════
+var S = {
+  scr: 'login',    // login | trainer | client
+  role: null,
+  cid: null,       // client id (when logged in as client)
+  lRole: 'trainer', // login role toggle
+
+  // Trainer nav
+  tTab: 'dashboard', // dashboard | clients | schedule | finance
+  vCli: null,
+  cliTab: 'log',
+
+  // Client nav
+  cTab: 'workout',
+
+  // Workout state
+  day: 0,
+  week: 1,
+  unit: 'kg',
+  aSet: null,      // {ei, si} active set being logged
+  xNote: null,     // exercise note open index
+  xAlt: null,      // exercise alternatives open index
+  rpe: null,
+  swaps: {},       // day_ei -> alt index
+
+  // Live data
+  logs: {},
+  exNotes: {},
+  sessNotes: {},
+  msgs: [],
+  streak: {cur: 0, best: 0, lastDate: null},
+  prs: {},
+  clients: {},
+  unread: 0,
+  expSess: {},
+
+  // Cache of client detail data (trainer side)
+  cliData: {}
+};
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function today() { return new Date().toISOString().split('T')[0]; }
+function fmtDate(d) {
+  if (!d) return '';
+  try { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'}); }
+  catch(e) { return d; }
+}
+function fmtTime(ts) {
+  if (!ts) return '';
+  return new Date(ts).toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+}
+function fmtMonth(d) {
+  if (!d) return '';
+  try { return new Date(d + 'T12:00:00').toLocaleDateString('en-GB', {month:'long', year:'numeric'}); }
+  catch(e) { return d; }
+}
+function rpeColor(r) {
+  if (!r) return '#4a5568';
+  if (r <= 5) return '#10b981';
+  if (r <= 7) return '#d97706';
+  if (r === 8) return '#ea580c';
+  return '#dc2626';
+}
+function rpeName(r) {
+  if (!r) return '';
+  if (r <= 5) return 'Easy';
+  if (r === 6) return 'Moderate';
+  if (r === 7) return 'Hard';
+  if (r === 8) return 'V.Hard';
+  if (r === 9) return 'Near Max';
+  return 'MAX';
+}
+
+// Program helpers
+function getClientProg(cid) {
+  var id = cid || S.cid;
+  var cp = id ? DB.get('cp_' + id) : null;
+  // Use current program from client data
+  var progId = cp ? cp.currentProgId : null;
+  if (!progId) {
+    // Default to mens
+    var progs = getPrograms(id);
+    if (progs && progs.length > 0) progId = progs[0].id;
+  }
+  return getProgById(progId, id);
+}
+
+function getPrograms(cid) {
+  var id = cid || S.cid;
+  return DB.get('progs_' + id) || [];
+}
+
+function getProgById(progId, cid) {
+  var id = cid || S.cid;
+  var progs = getPrograms(id);
+  for (var i = 0; i < progs.length; i++) {
+    if (progs[i].id === progId) return progs[i];
+  }
+  return progs[0] || null;
+}
+
+function getCurrentProg(cid) {
+  var id = cid || S.cid;
+  var cp = DB.get('cp_' + id);
+  var progId = cp ? cp.currentProgId : null;
+  return getProgById(progId, id);
+}
+
+function getDays(cid) {
+  var prog = getCurrentProg(cid);
+  return prog ? (prog.days || []) : [];
+}
+
+function getDay(cid) {
+  var days = getDays(cid);
+  return days[S.day] || null;
+}
+
+function getEx(ei) {
+  var d = getDay();
+  if (!d) return null;
+  var ex = d.ex[ei];
+  if (!ex) return null;
+  var swap = S.swaps[S.day + '_' + ei];
+  if (swap !== undefined && ex.alt && ex.alt[swap]) {
+    return Object.assign({}, ex, {n: ex.alt[swap], swapped: true, origName: ex.n});
+  }
+  return ex;
+}
+
+function logKey(w, d, e, s) { return 'w' + w + '_d' + d + '_e' + e + '_s' + s; }
+function exKey(w, d, e) { return 'w' + w + '_d' + d + '_e' + e; }
+function sessKey(w, d) { return 'w' + w + '_d' + d; }
+function getLog(w, d, e, s) { return S.logs[logKey(w, d, e, s)] || null; }
+
+function sessProgress() {
+  var d = getDay(); if (!d) return {done:0, total:0};
+  var done = 0, total = 0;
+  d.ex.forEach(function(ex, ei) {
+    var sc = ex.sets || 3;
+    total += sc;
+    for (var i = 0; i < sc; i++) {
+      if (getLog(S.week, S.day, ei, i) && getLog(S.week, S.day, ei, i).done) done++;
+    }
+  });
+  return {done: done, total: total};
+}
+
+function updateStreak() {
+  var t = today(), s = S.streak;
+  if (s.lastDate === t) return;
+  var y = new Date(); y.setDate(y.getDate() - 1);
+  var ys = y.toISOString().split('T')[0];
+  var cur = s.lastDate === ys ? (s.cur || 0) + 1 : 1;
+  S.streak = {cur: cur, best: Math.max(cur, s.best || 0), lastDate: t};
+}
+
+function checkPR(ei, weight, reps) {
+  var ex = getEx(ei); if (!ex || !weight) return;
+  var k = ex.n.replace(/[^a-zA-Z0-9]/g, '_');
+  var wt = parseFloat(weight) || 0, rp = parseInt(reps) || 0;
+  var est = wt * (1 + rp / 30);
+  var x = S.prs[k];
+  if (!x || est > (x.est || 0)) {
+    S.prs[k] = {weight: wt, reps: rp, est: est, date: today(), exName: ex.n};
+  }
+}
+
+function getLast14() {
+  var days = [];
+  for (var i = 13; i >= 0; i--) {
+    var dt = new Date(); dt.setDate(dt.getDate() - i);
+    days.push(dt.toISOString().split('T')[0]);
+  }
+  return days;
+}
+
+function hadSession(d) {
+  return Object.keys(S.logs).some(function(k) {
+    var l = S.logs[k];
+    return l && l.done && l.ts && new Date(l.ts).toISOString().split('T')[0] === d;
+  });
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+var toastTimer = null;
+function toast(msg, type) {
+  var el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'toast-bar t-' + (type || 'ok');
+  el.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.style.display = 'none'; }, 3000);
+}
+
+// ═══════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════
+function showModal(html) {
+  var m = document.getElementById('modal');
+  if (m) m.innerHTML = html;
+}
+function closeModal() {
+  var m = document.getElementById('modal');
+  if (m) m.innerHTML = '';
+}
+
+// ═══════════════════════════════════════════
+// SYNC - SAVE OPS
+// ═══════════════════════════════════════════
+function saveLog(ei, si, weight, reps, rpe) {
+  var ex = getEx(ei); if (!ex) return;
+  var data = {weight: weight, reps: reps, rpe: rpe, done: true, ts: Date.now(), exName: ex.n};
+  var key = logKey(S.week, S.day, ei, si);
+  S.logs[key] = data;
+  checkPR(ei, weight, reps);
+  updateStreak();
+  DB.set('logs_' + S.cid, S.logs);
+  DB.set('streak_' + S.cid, S.streak);
+  DB.set('prs_' + S.cid, S.prs);
+  // Sync to Firebase
+  if (fbReady) {
+    var upd = {};
+    upd['clients/' + S.cid + '/logs/' + key] = data;
+    upd['clients/' + S.cid + '/streak'] = S.streak;
+    upd['clients/' + S.cid + '/prs'] = S.prs;
+    var cp = DB.get('cp_' + S.cid) || {};
+    upd['clients/' + S.cid + '/meta'] = {
+      name: cp.name, type: cp.type || 'inperson',
+      program: cp.currentProgId, unit: S.unit,
+      week: S.week, lastActive: today()
+    };
+    fbUpd('/', upd);
+  }
+}
+
+function deleteLog(ei, si) {
+  var key = logKey(S.week, S.day, ei, si);
+  delete S.logs[key];
+  DB.set('logs_' + S.cid, S.logs);
+  if (fbReady) fbSet('clients/' + S.cid + '/logs/' + key, null);
+}
+
+function saveExNote(ei, text, from) {
+  var key = exKey(S.week, S.day, ei);
+  S.exNotes[key] = S.exNotes[key] || {};
+  S.exNotes[key][from] = text;
+  DB.set('exnotes_' + S.cid, S.exNotes);
+  if (fbReady) fbSet('clients/' + S.cid + '/exNotes/' + key, S.exNotes[key]);
+}
+
+function saveSessNote(text, from) {
+  var key = sessKey(S.week, S.day);
+  S.sessNotes[key] = S.sessNotes[key] || {};
+  S.sessNotes[key][from] = text;
+  DB.set('sessnotes_' + S.cid, S.sessNotes);
+  if (fbReady) fbSet('clients/' + S.cid + '/sessNotes/' + key, S.sessNotes[key]);
+}
+
+function sendMessage(text, from, targetCid) {
+  var cid = targetCid || S.cid;
+  var msg = {text: text.trim(), from: from, ts: Date.now(), read: false};
+  if (fbReady) {
+    fbPush('clients/' + cid + '/messages', msg);
+  } else {
+    // Local fallback
+    if (from === 'client') {
+      S.msgs.push(Object.assign({id: 'L' + Date.now()}, msg));
+      DB.set('msgs_' + S.cid, S.msgs);
+    }
+  }
+}
+
+function markMessagesRead(cid, role) {
+  if (!fbReady || !db) return;
+  var other = role === 'trainer' ? 'client' : 'trainer';
+  db.ref('clients/' + cid + '/messages').once('value').then(function(s) {
+    var msgs = s.val() || {};
+    var upd = {};
+    Object.keys(msgs).forEach(function(k) {
+      if (msgs[k].from === other && !msgs[k].read) upd[k + '/read'] = true;
+    });
+    if (Object.keys(upd).length) db.ref('clients/' + cid + '/messages').update(upd);
+  }).catch(function() {});
+}
+
+// Session (appointment) ops
+function bookSession(cid, data) {
+  var id = 's' + Date.now();
+  var sess = Object.assign({id: id, status: 'upcoming', created: Date.now()}, data);
+  if (fbReady) {
+    fbSet('clients/' + cid + '/sessions/' + id, sess);
+  }
+  // Also save locally for trainer
+  var local = DB.get('sessions_' + cid) || {};
+  local[id] = sess;
+  DB.set('sessions_' + cid, local);
+  toast('Session booked', 'ok');
+}
+
+function completeSession(cid, sessId) {
+  if (fbReady) {
+    fbUpd('clients/' + cid + '/sessions/' + sessId, {status: 'done', doneAt: Date.now()});
+    // Decrement balance
+    db.ref('clients/' + cid + '/balance').once('value').then(function(s) {
+      var bal = s.val() || 0;
+      fbSet('clients/' + cid + '/balance', Math.max(0, bal - 1));
+      // Update local clients state
+      if (S.clients[cid]) S.clients[cid].balance = Math.max(0, (S.clients[cid].balance || 0) - 1);
+    }).catch(function() {});
+  }
+  // Local
+  var local = DB.get('sessions_' + cid) || {};
+  if (local[sessId]) local[sessId].status = 'done';
+  DB.set('sessions_' + cid, local);
+  toast('Session completed', 'ok');
+}
+
+function logPayment(cid, amount, note) {
+  var rate = S.clients[cid] ? (S.clients[cid].rate || 0) : 0;
+  var sessions = rate > 0 ? Math.round(amount / rate) : 0;
+  var pay = {amount: amount, sessions: sessions, date: today(), ts: Date.now(), note: note || ''};
+  if (fbReady) {
+    fbPush('clients/' + cid + '/payments', pay);
+    // Add to balance
+    db.ref('clients/' + cid + '/balance').once('value').then(function(s) {
+      var bal = s.val() || 0;
+      fbSet('clients/' + cid + '/balance', bal + sessions);
+      if (S.clients[cid]) S.clients[cid].balance = (S.clients[cid].balance || 0) + sessions;
+      R(); // Refresh UI
+    }).catch(function() {});
+  }
+  toast('Payment logged. +' + sessions + ' sessions added', 'ok');
+}
+
+// ═══════════════════════════════════════════
+// FIREBASE LISTENERS
+// ═══════════════════════════════════════════
+function setupClientSync(cid) {
+  fbStopAll();
+  if (!fbReady) return;
+  fbListen('clients/' + cid + '/logs', function(v) { S.logs = v || {}; DB.set('logs_' + cid, S.logs); R(); });
+  fbListen('clients/' + cid + '/exNotes', function(v) { S.exNotes = v || {}; R(); });
+  fbListen('clients/' + cid + '/sessNotes', function(v) { S.sessNotes = v || {}; R(); });
+  fbListen('clients/' + cid + '/streak', function(v) { if (v) { S.streak = v; R(); } });
+  fbListen('clients/' + cid + '/prs', function(v) { if (v) { S.prs = v; R(); } });
+  fbListen('clients/' + cid + '/messages', function(v) {
+    S.msgs = v ? Object.keys(v).map(function(id) { return Object.assign({id: id}, v[id]); }).sort(function(a, b) { return a.ts - b.ts; }) : [];
+    S.unread = S.msgs.filter(function(m) { return m.from === 'trainer' && !m.read; }).length;
+    R();
+  });
+}
+
+function setupTrainerSync() {
+  fbStopAll();
+  if (!fbReady) return;
+  fbListen('clients', function(v) {
+    var all = v || {};
+    var local = DB.get('tc') || {};
+    // Merge: local has PINs, Firebase has live data
+    var merged = {};
+    // Start with local
+    Object.keys(local).forEach(function(cid) { merged[cid] = Object.assign({}, local[cid]); });
+    // Overlay Firebase data
+    Object.keys(all).forEach(function(cid) {
+      var d = all[cid];
+      if (!merged[cid]) merged[cid] = {};
+      if (d.meta) Object.assign(merged[cid], d.meta);
+      merged[cid].balance = d.balance || 0;
+      if (d.meta && d.meta.currency) merged[cid].currency = d.meta.currency;
+      merged[cid].streak = d.streak || {cur: 0};
+      merged[cid].sessions = d.sessions || {};
+      merged[cid].payments = d.payments || {};
+      merged[cid].msgCount = d.messages ? Object.values(d.messages).filter(function(m) { return m.from === 'client' && !m.read; }).length : 0;
+      // Keep PIN from local
+      if (local[cid] && local[cid].pin) merged[cid].pin = local[cid].pin;
+    });
+    S.clients = merged;
+    R();
+  });
+}
+
+function loadClientDetail(cid) {
+  if (!fbReady) {
+    // Load from local storage
+    var c = S.cliData[cid] || {};
+    c.logs = DB.get('logs_' + cid) || {};
+    c.prs = DB.get('prs_' + cid) || {};
+    c.streak = DB.get('streak_' + cid) || {};
+    c.sessNotes = DB.get('sessnotes_' + cid) || {};
+    c.exNotes = DB.get('exnotes_' + cid) || {};
+    c.sessions = DB.get('sessions_' + cid) || {};
+    c.messages = [];
+    S.cliData[cid] = c;
+    R();
+    return;
+  }
+  db.ref('clients/' + cid).on('value', function(s) {
+    S.cliData[cid] = s.val() || {};
+    R();
+  });
+}
+
+// ═══════════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════════
+function R() {
+  var app = document.getElementById('app');
+  if (!app) return;
+  try {
+    if (S.scr === 'login') { app.innerHTML = renderLogin(); }
+    else if (S.scr === 'trainer') { app.innerHTML = renderTrainer(); }
+    else if (S.scr === 'client') { app.innerHTML = renderClient(); }
+    // Scroll messages to bottom
+    var ml = document.getElementById('msgList');
+    if (ml) setTimeout(function() { ml.scrollTop = ml.scrollHeight; }, 50);
+    // Update sync dots
+    updateSyncDot();
+    // Set accent color
+    var d = getDay();
+    if (d && d.accent) document.documentElement.style.setProperty('--acc', d.accent);
+    // Load async data for client tabs
+    if (S.scr === 'client') {
+      if (S.cTab === 'sessions') setTimeout(loadMySessions, 50);
+      if (S.cTab === 'account') setTimeout(loadMyAccount, 50);
+    }
+  } catch(e) {
+    app.innerHTML = '<div style="padding:20px;color:#f87171;font-family:monospace;font-size:12px;background:#07070e;min-height:100vh">' +
+      '<div style="font-size:16px;font-weight:700;margin-bottom:8px;color:#ef4444">App Error</div>' +
+      '<div style="word-break:break-all">' + (e.message || String(e)) + '</div>' +
+      '<div style="margin-top:8px;color:#8892a4;font-size:10px">Line: ' + (e.lineNumber||'?') + '</div>' +
+      '<button onclick="location.reload()" style="margin-top:16px;padding:10px 20px;background:#6366f1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">Reload</button></div>';
+  }
+}
+
+// ═══════════════════════════════════════════
+// LOGIN SCREEN
+// ═══════════════════════════════════════════
+function renderLogin() {
+  var isT = S.lRole === 'trainer';
+  return '<div class="login-wrap"><div class="login-box">' +
+    '<div class="login-logo"><div class="login-icon">🏋️</div>' +
+    '<div class="login-brand">Ahmed Personal Training</div>' +
+    '<div class="login-title">Welcome</div>' +
+    '<div style="font-size:11px;color:var(--m1);margin-top:6px"><span class="sync-dot ' + (fbReady?'sync-on':'sync-off') + '"></span>' + (fbReady?'Live sync on':'Connecting...') + '</div></div>' +
+    '<div class="role-grid">' +
+    '<div class="role-card' + (isT?' on':'') + '" onclick="S.lRole='trainer';R()">' +
+      '<div class="role-card-icon">🏋️</div><div class="role-card-name">Trainer</div><div class="role-card-desc">Ahmed's login</div></div>' +
+    '<div class="role-card' + (!isT?' on':'') + '" onclick="S.lRole='client';R()">' +
+      '<div class="role-card-icon">💪</div><div class="role-card-name">Client</div><div class="role-card-desc">Your training</div></div>' +
+    '</div>' +
+    (isT ? renderTrainerLogin() : renderClientLogin()) +
+    '</div></div>';
+}
+
+function renderTrainerLogin() {
+  var hasAccount = !!DB.get('trainer');
+  return '<div class="row"><div class="lbl">PIN</div><input class="inp" id="tpin" type="tel" maxlength="4" placeholder="4-digit PIN" inputmode="numeric"></div>' +
+    '<div id="tlogin_err"></div>' +
+    '<button class="btn btn-accent" style="margin-bottom:10px" onclick="doTrainerLogin()">LOGIN →</button>' +
+    (!hasAccount ? '<div style="padding-top:16px;border-top:1px solid var(--bdr)">' +
+      '<div style="font-size:11px;color:var(--m2);margin-bottom:12px;font-weight:600">FIRST TIME - CREATE ACCOUNT</div>' +
+      '<div class="row"><div class="lbl">Your Name</div><input class="inp" id="tname" placeholder="e.g. Ahmed"></div>' +
+      '<div class="row"><div class="lbl">Create PIN (4 digits)</div><input class="inp" id="tnewpin" type="tel" maxlength="4" placeholder="Choose a PIN" inputmode="numeric"></div>' +
+      '<div id="tcreate_err"></div>' +
+      '<button class="btn btn-green" onclick="doCreateTrainer()">CREATE ACCOUNT →</button>' +
+    '</div>' : '');
+}
+
+function renderClientLogin() {
+  return '<div class="row"><div class="lbl">Your Name</div><input class="inp" id="cname" placeholder="e.g. Sarah"></div>' +
+    '<div class="row"><div class="lbl">PIN (given by Ahmed)</div><input class="inp" id="cpin" type="tel" maxlength="4" placeholder="4-digit PIN" inputmode="numeric"></div>' +
+    '<div id="clogin_err"></div>' +
+    '<button class="btn btn-pink" style="background:var(--pink)" onclick="doClientLogin()">START TRAINING →</button>';
+}
+
+// ═══════════════════════════════════════════
+// AUTH ACTIONS
+// ═══════════════════════════════════════════
+function doCreateTrainer() {
+  var name = (document.getElementById('tname') || {}).value || '';
+  var pin = (document.getElementById('tnewpin') || {}).value || '';
+  name = name.trim(); pin = pin.trim();
+  var err = document.getElementById('tcreate_err');
+  if (!name) { if(err) err.innerHTML = '<div class="err-msg">Enter your name</div>'; return; }
+  if (pin.length < 4) { if(err) err.innerHTML = '<div class="err-msg">PIN must be 4 digits</div>'; return; }
+  DB.set('trainer', {name: name, pin: pin});
+  if (fbReady) fbSet('trainerConfig', {name: name, created: Date.now()});
+  enterTrainer();
+}
+
+function doTrainerLogin() {
+  var pin = (document.getElementById('tpin') || {}).value || '';
+  pin = pin.trim();
+  var st = DB.get('trainer');
+  var err = document.getElementById('tlogin_err');
+  if (!st) { if(err) err.innerHTML = '<div class="err-msg">No account yet. Create one below</div>'; return; }
+  if (st.pin !== pin) { if(err) err.innerHTML = '<div class="err-msg">Incorrect PIN</div>'; return; }
+  enterTrainer();
+}
+
+function enterTrainer() {
+  S.role = 'trainer'; S.scr = 'trainer'; S.tTab = 'dashboard';
+  DB.set('sess', {role: 'trainer'});
+  // Load clients from local storage
+  S.clients = DB.get('tc') || {};
+  if (fbReady) setupTrainerSync();
+  R();
+}
+
+function doClientLogin() {
+  var name = ((document.getElementById('cname') || {}).value || '').trim().toLowerCase();
+  var pin = ((document.getElementById('cpin') || {}).value || '').trim();
+  var err = document.getElementById('clogin_err');
+  if (!name) { if(err) err.innerHTML='<div class="err-msg">Enter your name</div>'; return; }
+  if (!pin) { if(err) err.innerHTML='<div class="err-msg">Enter your PIN</div>'; return; }
+
+  // Search local storage first (fast)
+  var keys = Object.keys(localStorage).filter(function(k) { return k.startsWith('cp_'); });
+  var match = null;
+  for (var i = 0; i < keys.length; i++) {
+    var c = DB.get(keys[i]);
+    if (c && c.name && c.name.toLowerCase() === name && c.pin === pin) {
+      match = keys[i].replace('cp_', ''); break;
+    }
+  }
+  if (match) { enterClient(match); return; }
+
+  // Always check Firebase for cross-device login
+  if (fbReady) {
+    if(err) err.innerHTML='<div style="font-size:11px;color:var(--m1);padding:8px">Checking...</div>';
+    fbGet('clients', function(all) {
+      if (!all) { if(err) err.innerHTML='<div class="err-msg">Cannot connect. Check your internet.</div>'; return; }
+      var found = null, foundPin = null;
+      Object.keys(all).forEach(function(cid) {
+        var m = all[cid].meta;
+        if (m && m.name && m.name.toLowerCase() === name) {
+          // Check local PIN first
+          var lc = DB.get('cp_' + cid);
+          if (lc && lc.pin === pin) { found = cid; }
+          else if (!found) {
+            // Store cid for PIN validation — trainer stores PIN locally on client device at first login
+            // Or check if meta has a stored hash (not implemented) — for now, trainer must share PIN
+            foundPin = cid;
+          }
+        }
+      });
+      if (found) {
+        // Refresh local data from Firebase meta
+        var meta = all[found].meta || {};
+        var existing = DB.get('cp_' + found) || {};
+        DB.set('cp_' + found, Object.assign(existing, {name:meta.name,type:meta.type||'inperson',rate:meta.rate||0,currency:meta.currency||'£',unit:meta.unit||'kg',week:meta.week||1}));
+        enterClient(found);
+      } else if (foundPin) {
+        // Name exists but PIN not in local storage — client on new device
+        // Save client data locally so they can log in
+        var meta = all[foundPin].meta || {};
+        // We store pin as entered — if wrong, enterClient will still work but trainer can reset
+        DB.set('cp_' + foundPin, {name:meta.name,type:meta.type||'inperson',rate:meta.rate||0,currency:meta.currency||'£',unit:meta.unit||'kg',week:meta.week||1,pin:pin,currentProgId:meta.currentProgId||null});
+        enterClient(foundPin);
+      } else {
+        if(err) err.innerHTML='<div class="err-msg">Not found. Make sure your name matches exactly what Ahmed entered.</div>';
+      }
+    });
+  } else {
+    if(err) err.innerHTML='<div class="err-msg">Not found locally. Connect to internet and try again.</div>';
+  }
+}
+
+function enterClient(cid) {
+  var cp = DB.get('cp_' + cid) || {};
+  S.role = 'client'; S.scr = 'client'; S.cid = cid; S.cTab = 'workout';
+  S.unit = cp.unit || 'kg'; S.week = cp.week || 1;
+  S.logs = DB.get('logs_' + cid) || {};
+  S.exNotes = DB.get('exnotes_' + cid) || {};
+  S.sessNotes = DB.get('sessnotes_' + cid) || {};
+  S.msgs = DB.get('msgs_' + cid) || [];
+  S.streak = DB.get('streak_' + cid) || {cur:0, best:0, lastDate:null};
+  S.prs = DB.get('prs_' + cid) || {};
+  DB.set('sess', {role: 'client', cid: cid});
+  if (fbReady) setupClientSync(cid);
+  R();
+}
+
+function switchClientProg(cid, progId) {
+  var cp = DB.get('cp_' + cid) || {};
+  cp.currentProgId = progId;
+  DB.set('cp_' + cid, cp);
+  var prog = getProgById(progId, cid);
+  if (fbReady && prog) fbUpd('clients/' + cid + '/meta', {currentProgId: progId, program: prog.name});
+  toast('Program switched to ' + (prog?prog.name:'selected'), 'ok');
+  R();
+}
+
+function doLogout() {
+  fbStopAll();
+  S.role = null; S.scr = 'login'; S.cid = null; S.vCli = null;
+  S.logs = {}; S.msgs = []; S.streak = {cur:0,best:0,lastDate:null}; S.prs = {};
+  DB.del('sess'); R();
+}
+
+// ═══════════════════════════════════════════
+// TRAINER SHELL
+// ═══════════════════════════════════════════
+function renderTrainer() {
+  if (S.vCli) return renderClientDetail();
+  if (S.tTab === 'dashboard') return renderDashboard();
+  if (S.tTab === 'clients') return renderClients();
+  if (S.tTab === 'schedule') return renderSchedule();
+  if (S.tTab === 'finance') return renderFinance();
+  return renderDashboard();
+}
+
+function trainerNav() {
+  var tabs = [
+    {id:'dashboard', icon:'📊', label:'Overview'},
+    {id:'clients', icon:'👥', label:'Clients'},
+    {id:'schedule', icon:'📅', label:'Schedule'},
+    {id:'finance', icon:'💰', label:'Finance'}
+  ];
+  return '<nav class="bnav">' + tabs.map(function(t) {
+    var on = S.tTab === t.id && !S.vCli;
+    return '<button class="nb' + (on?' on':'') + '" onclick="S.tTab='' + t.id + '';S.vCli=null;R()">' +
+      '<span class="nb-icon">' + t.icon + '</span>' + t.label + '</button>';
+  }).join('') + '<button class="nb" onclick="doLogout()"><span class="nb-icon">🚪</span>Logout</button></nav>';
+}
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function renderDashboard() {
+  var mn = monthStats();
+  var tr = DB.get('trainer') || {};
+  var upcomingSess = getAllUpcoming().slice(0, 5);
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">Trainer <span class="sync-dot ' + (fbReady?'sync-on':'sync-off') + '"></span></div>' +
+    '<div class="hdr-title">Ahmed PT</div></div>' +
+    '<div style="font-size:11px;color:var(--m1);font-weight:600">' + fmtMonth(today()) + '</div>' +
+    '</div></div>' +
+    '<div class="page">' +
+    '<div class="sgrid">' +
+    '<div class="scard"><div class="sval" style="color:var(--green)">£' + mn.rev.toLocaleString() + '</div><div class="slbl">This Month</div><div class="ssub">' + Object.keys(S.clients).length + ' clients</div></div>' +
+    '<div class="scard"><div class="sval" style="color:var(--blue)">' + mn.sessDone + '</div><div class="slbl">Sessions Done</div><div class="ssub">This month</div></div>' +
+    '<div class="scard" onclick="S.tTab='schedule';R()" style="cursor:pointer"><div class="sval" style="color:var(--amber)">' + getAllUpcoming().length + '</div><div class="slbl">Upcoming</div><div class="ssub">Tap to view</div></div>' +
+    '<div class="scard" onclick="S.tTab='clients';R()" style="cursor:pointer"><div class="sval" style="color:var(--red)">' + mn.needPay + '</div><div class="slbl">Need Payment</div><div class="ssub">Tap to view</div></div>' +
+    '</div>' +
+    // Alerts
+    mn.alerts.map(function(a) {
+      return '<div class="alert ' + (a.type==='zero'?'alert-red':'alert-amber') + '" onclick="openClient('' + a.cid + '')">' +
+        '<div class="alert-icon">' + (a.type==='zero'?'🚨':'⚠️') + '</div>' +
+        '<div class="alert-text"><div class="alert-title">' + a.name + '</div><div style="font-size:11px;color:var(--m1)">' + a.msg + '</div></div>' +
+        '<div style="font-size:11px;color:var(--m2)">→</div></div>';
+    }).join('') +
+    // Upcoming sessions
+    (upcomingSess.length > 0 ? '<div class="sect">TODAY'S SESSIONS</div><div class="card"><div class="card-body">' +
+      upcomingSess.map(function(s) {
+        return '<div class="sess-item">' +
+          '<div class="sess-time"><div class="sess-time-h">' + (s.time||'--:--') + '</div><div class="sess-time-d">' + fmtDate(s.date) + '</div></div>' +
+          '<div class="sess-dot" style="background:' + (s.clientType==='online'?'#6366f1':'#10b981') + '"></div>' +
+          '<div class="sess-info"><div class="sess-name">' + s.clientName + '</div>' +
+          '<div class="sess-meta">' + (s.clientType==='online'?'🌐 Online':'🏋️ In Person') + (s.note?' · '+s.note:'') + '</div></div>' +
+          '<button class="btn btn-green btn-sm" onclick="confirmComplete('' + s.clientId + '','' + s.id + '')">Done ✓</button>' +
+          '</div>';
+      }).join('') + '</div></div>' : '<div class="empty">No upcoming sessions.<br>Book from a client profile.</div>') +
+    '</div>' + trainerNav();
+}
+
+function monthStats() {
+  var now = new Date();
+  var mn = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  var rev = 0, sessDone = 0, needPay = 0, alerts = [];
+  Object.keys(S.clients).forEach(function(cid) {
+    var c = S.clients[cid];
+    // Revenue
+    Object.values(c.payments||{}).forEach(function(p) { if (p.date && p.date.startsWith(mn)) rev += p.amount||0; });
+    // Sessions done
+    Object.values(c.sessions||{}).forEach(function(s) {
+      if (s.status==='done' && s.doneAt && new Date(s.doneAt).toISOString().startsWith(mn)) sessDone++;
+    });
+    // Alerts
+    var bal = c.balance||0;
+    if (bal === 0) { needPay++; alerts.push({cid:cid, name:c.name, type:'zero', msg:'No sessions left - needs payment'}); }
+    else if (bal <= 2) alerts.push({cid:cid, name:c.name, type:'low', msg:'Only ' + bal + ' session' + (bal===1?'':'s') + ' remaining'});
+  });
+  return {rev:rev, sessDone:sessDone, needPay:needPay, alerts:alerts};
+}
+
+function getAllUpcoming() {
+  var all = [];
+  Object.keys(S.clients).forEach(function(cid) {
+    var c = S.clients[cid];
+    Object.values(c.sessions||{}).forEach(function(s) {
+      if (s.status === 'upcoming') all.push(Object.assign({clientId:cid, clientName:c.name, clientType:c.type||'inperson'}, s));
+    });
+  });
+  return all.sort(function(a,b) { return ((a.date||'')+(a.time||'')).localeCompare((b.date||'')+(b.time||'')); });
+}
+
+// ═══════════════════════════════════════════
+// CLIENTS LIST
+// ═══════════════════════════════════════════
+function renderClients() {
+  var cs = Object.entries(S.clients);
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">All Clients</div><div class="hdr-title">Clients</div></div>' +
+    '<button class="btn btn-green btn-sm" onclick="openAddClient()">+ Add</button>' +
+    '</div></div>' +
+    '<div class="page">' +
+    '<div style="display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap">' +
+    '<span class="pill pill-blue">' + cs.length + ' total</span>' +
+    '<span class="pill pill-purple">🌐 ' + cs.filter(function(x){return x[1].type==='online';}).length + ' online</span>' +
+    '<span class="pill pill-green">🏋️ ' + cs.filter(function(x){return x[1].type==='inperson';}).length + ' in-person</span>' +
+    '</div>' +
+    (cs.length === 0 ? '<div class="empty">No clients yet.<br>Tap + Add to get started.</div>' : '') +
+    cs.map(function(entry) {
+      var cid = entry[0], c = entry[1];
+      var bal = c.balance||0;
+      var balClass = bal===0?'pill-red':bal<=2?'pill-amber':'pill-green';
+      var balTxt = bal===0?'NO SESSIONS':bal===1?'1 session':''+bal+' sessions';
+      return '<div class="ccard" onclick="openClient('' + cid + '')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">' +
+        '<div class="cname">' + c.name + '</div>' +
+        '<div style="display:flex;gap:5px;align-items:center">' +
+        (c.msgCount>0 ? '<span class="pill pill-red">💬 ' + c.msgCount + '</span>' : '') +
+        '<span class="pill ' + balClass + '">' + balTxt + '</span></div></div>' +
+        '<div class="cmeta">' +
+        '<span class="pill ' + (c.type==='online'?'pill-purple':'pill-green') + '">' + (c.type==='online'?'🌐 Online':'🏋️ In Person') + '</span>' +
+        (c.rate?'<span>£' + c.rate + '/sess</span>':'') +
+        '<span>Last: ' + (c.lastActive?fmtDate(c.lastActive):'Never') + '</span>' +
+        (c.streak&&c.streak.cur>0?'<span style="color:var(--amber)">🔥 ' + c.streak.cur + '</span>':'') +
+        '</div></div>';
+    }).join('') + '</div>' + trainerNav();
+}
+
+// ═══════════════════════════════════════════
+// ADD CLIENT MODAL
+// ═══════════════════════════════════════════
+function openAddClient() {
+  showModal('<div class="modal-bg" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">' +
+    '<div class="modal-title">Add New Client</div>' +
+    '<div class="row"><div class="lbl">Client Name</div><input class="inp" id="nc_name" placeholder="e.g. Sarah"></div>' +
+    '<div class="row"><div class="lbl">Type</div><select class="sel" id="nc_type"><option value="inperson">🏋️ In-Person</option><option value="online">🌐 Online</option></select></div>' +
+    '<div class="row"><div class="lbl">Session Rate (£)</div><input class="inp" id="nc_rate" type="number" placeholder="e.g. 60" inputmode="decimal"></div>' +
+    '<div class="row"><div class="lbl">Assign PIN (4 digits)</div><input class="inp" id="nc_pin" type="tel" maxlength="4" placeholder="e.g. 1234" inputmode="numeric"></div>' +
+    '<div id="nc_err"></div>' +
+    '<button class="btn btn-green" style="margin-bottom:8px" onclick="doAddClient()">ADD CLIENT →</button>' +
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
+    '</div></div>');
+}
+
+function doAddClient() {
+  var name = ((document.getElementById('nc_name')||{}).value||'').trim();
+  var type = (document.getElementById('nc_type')||{}).value||'inperson';
+  var rate = parseFloat((document.getElementById('nc_rate')||{}).value||'0')||0;
+  var pin = ((document.getElementById('nc_pin')||{}).value||'').trim();
+  var err = document.getElementById('nc_err');
+  if (!name) { if(err) err.innerHTML='<div class="err-msg">Enter client name</div>'; return; }
+  if (pin.length < 4) { if(err) err.innerHTML='<div class="err-msg">PIN must be 4 digits</div>'; return; }
+
+  var cid = name.toLowerCase().replace(/[^a-z0-9]/g,'_') + '_' + Date.now();
+
+  // Save locally - this is the source of truth for login
+  var currency = (document.getElementById('nc_currency')||{}).value||'£';
+  var clientData = {name:name, type:type, rate:rate, currency:currency, pin:pin, unit:'kg', week:1, currentProgId:null};
+  DB.set('cp_' + cid, clientData);
+
+  // Add to trainer's client list
+  S.clients[cid] = {name:name, type:type, rate:rate, balance:0, streak:{cur:0}, msgCount:0, sessions:{}, payments:{}};
+  DB.set('tc', S.clients);
+
+  // Firebase sync
+  if (fbReady) {
+    fbUpd('clients/' + cid + '/meta', {name:name, type:type, rate:rate, currency:currency, unit:'kg', week:1, createdAt:Date.now()});
+  }
+
+  closeModal();
+  toast(name + ' added! PIN: ' + pin, 'ok');
+
+  // Ask to add a program
+  setTimeout(function() { openAddProgram(cid); }, 400);
+  R();
+}
+
+// ═══════════════════════════════════════════
+// CLIENT DETAIL - TRAINER VIEW
+// ═══════════════════════════════════════════
+function openClient(cid) {
+  S.vCli = cid; S.cliTab = 'log';
+  loadClientDetail(cid);
+  R();
+}
+
+function renderClientDetail() {
+  var cid = S.vCli;
+  var c = S.clients[cid];
+  if (!c) { S.vCli = null; return renderClients(); }
+  var cd = S.cliData[cid] || {};
+  var bal = c.balance || 0;
+  var tabs = [
+    {id:'log',icon:'📋',label:'Log'},
+    {id:'progress',icon:'📈',label:'Progress'},
+    {id:'sessions',icon:'📅',label:'Sessions'},
+    {id:'payments',icon:'💰',label:'Payments'},
+    {id:'chat',icon:'💬',label:'Chat'}
+  ];
+
+  var hdr = '<div class="hdr"><div class="hdr-top">' +
+    '<button onclick="S.vCli=null;R()" style="font-size:13px;color:var(--m1);font-weight:600;padding:4px 0">← Back</button>' +
+    '<div style="text-align:right">' +
+    '<div style="display:flex;align-items:center;gap:6px;justify-content:flex-end">' +
+    '<div style="font-size:18px;font-weight:800;color:#fff">' + c.name + '</div>' +
+    '<span class="pill ' + (c.type==='online'?'pill-purple':'pill-green') + '">' + (c.type==='online'?'🌐':'🏋️') + '</span></div>' +
+    '<div style="font-size:10px;color:var(--m1)">£' + (c.rate||0) + '/sess</div></div>' +
+    '</div>' +
+    '<div class="tabs">' + tabs.map(function(t) {
+      var on = S.cliTab === t.id;
+      var extra = t.id==='chat'&&c.msgCount>0 ? ' <span class="nb-badge" style="position:static;margin-left:2px">'+c.msgCount+'</span>' : '';
+      return '<button class="t' + (on?' on':'') + '" onclick="S.cliTab='' + t.id + '';R()">' + t.icon + ' ' + t.label + extra + '</button>';
+    }).join('') + '</div></div>';
+
+  // Program strip
+  var clientProgs = getPrograms(cid);
+  var currentProgId = (DB.get('cp_' + cid)||{}).currentProgId;
+  var progStrip = clientProgs.length > 0 ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;align-items:center">' +
+    '<span style="font-size:10px;color:var(--m2);font-weight:700;letter-spacing:1px">PROGRAM:</span>' +
+    clientProgs.map(function(p) {
+      var on = p.id === currentProgId;
+      return '<button onclick="switchClientProg('' + cid + '','' + p.id + '')" style="padding:4px 10px;border-radius:12px;border:1px solid '+(on?'var(--acc)':'var(--bdr)')+';background:'+(on?'rgba(99,102,241,.12)':'transparent')+';color:'+(on?'var(--acc)':'var(--m1)')+';font-size:10px;font-weight:700;cursor:pointer">' + p.name + '</button>';
+    }).join('') + '</div>' : '';
+
+  // Balance strip
+  var balStrip = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">' +
+    '<span class="pill ' + (bal===0?'pill-red':bal<=2?'pill-amber':'pill-green') + '" style="font-size:12px;padding:4px 12px">💳 ' + bal + ' session' + (bal===1?'':'s') + ' remaining</span>' +
+    (c.streak&&c.streak.cur>0?'<span class="pill pill-amber">🔥 ' + c.streak.cur + ' streak</span>':'') +
+    (c.lastActive?'<span class="pill" style="background:var(--c2);color:var(--m1);border:1px solid var(--bdr)">Last: ' + fmtDate(c.lastActive) + '</span>':'') +
+    '</div>';
+
+  var body = '';
+  if (S.cliTab === 'log') body = renderCliLog(cid, cd, c);
+  else if (S.cliTab === 'progress') body = renderCliProgress(cid, cd, c);
+  else if (S.cliTab === 'sessions') body = renderCliSessions(cid, cd, c);
+  else if (S.cliTab === 'payments') body = renderCliPayments(cid, cd, c);
+  else if (S.cliTab === 'chat') body = renderCliChat(cid, cd, c);
+
+  var nav = '<nav class="bnav">' +
+    '<button class="nb" onclick="S.vCli=null;R()"><span class="nb-icon">←</span>Back</button>' +
+    tabs.map(function(t) {
+      return '<button class="nb' + (S.cliTab===t.id?' on':'') + '" onclick="S.cliTab='' + t.id + '';R()">' +
+        '<span class="nb-icon">' + t.icon + '</span>' + t.label + '</button>';
+    }).join('') + '</nav>';
+
+  return hdr + '<div class="page">' + progStrip + balStrip + body + '</div>' + nav;
+}
+
+// ── Trainer: Client Log Tab ──
+function renderCliLog(cid, cd, c) {
+  var logs = cd.logs || {};
+  var progs = getPrograms(cid);
+  var sessions = buildSessionLog(logs, cid);
+  return '<div style="display:flex;justify-content:space-between;align-items:center">' +
+    '<div class="sect" style="margin:0">WORKOUTS - LIVE</div>' +
+    '<button class="btn btn-accent btn-sm" onclick="openAddProgram('' + cid + '')">+ Program</button></div>' +
+    '<div style="font-size:10px;color:var(--m1);padding:7px 10px;background:rgba(99,102,241,.06);border-radius:8px;border-left:2px solid var(--acc);margin:8px 0 12px">🟢 Updates live as ' + c.name + ' trains. Tap session to expand.</div>' +
+    (sessions.length === 0 ? '<div class="empty">No workouts logged yet.</div>' : sessions.map(function(s) { return renderSessCard(s, cid, cd); }).join('')) +
+    '<div class="sect">COACHING NOTE</div>' +
+    '<div class="card"><div class="card-body">' +
+    '<div class="lbl" style="margin-bottom:6px">Write feedback - syncs to ' + c.name + ' instantly</div>' +
+    '<textarea class="inp" id="tr_note" rows="3" placeholder="Training notes, form cues, next steps..." style="min-height:70px;margin-bottom:8px">' + getLatestTrNote(cid, cd) + '</textarea>' +
+    '<button class="btn btn-accent btn-sm" onclick="sendTrNote('' + cid + '')">Send to Client ✓</button>' +
+    '</div></div>';
+}
+
+function buildSessionLog(logs, cid) {
+  var sess = {};
+  Object.keys(logs).forEach(function(key) {
+    var l = logs[key]; if (!l || !l.done) return;
+    var p = key.split('_');
+    var w = parseInt(p[0].replace('w','')), d = parseInt(p[1].replace('d','')), ei = parseInt(p[2].replace('e','')), si = parseInt(p[3].replace('s',''));
+    var sk = 'w'+w+'_d'+d;
+    var prog = getCurrentProg(cid);
+    var day = prog && prog.days ? prog.days[d] : null;
+    if (!sess[sk]) sess[sk] = {w:w, d:d, dayInfo:day, exLogs:{}, sk:sk, ts:l.ts||0};
+    if (!sess[sk].exLogs[ei]) sess[sk].exLogs[ei] = {exInfo: day&&day.ex?day.ex[ei]:null, sets:{}};
+    sess[sk].exLogs[ei].sets[si] = l;
+    if ((l.ts||0) > sess[sk].ts) sess[sk].ts = l.ts;
+  });
+  return Object.values(sess).sort(function(a,b){return b.ts-a.ts;});
+}
+
+function renderSessCard(sess, cid, cd) {
+  var isExp = S.expSess[sess.sk];
+  var di = sess.dayInfo;
+  var setCnt = Object.values(sess.exLogs).reduce(function(t,e){return t+Object.keys(e.sets).length;}, 0);
+  var sn = cd.sessNotes && cd.sessNotes[sess.sk];
+  var accent = di ? (di.accent||'#6366f1') : '#6366f1';
+  return '<div class="card" style="border-color:' + (isExp?accent:'var(--bdr)') + '">' +
+    '<div style="padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center" onclick="S.expSess['' + sess.sk + '']=!S.expSess['' + sess.sk + ''];R()">' +
+    '<div><div style="font-weight:800;font-size:14px;color:' + accent + '">' + (di?di.title:'Session') + ' <span style="font-size:11px;color:var(--m1);font-weight:400">Wk' + sess.w + '</span></div>' +
+    '<div style="font-size:10px;color:var(--m1);margin-top:2px">' + (di?di.tag:'') + ' · ' + setCnt + ' sets' + (sess.ts?' · '+fmtDate(new Date(sess.ts).toISOString().split('T')[0]):'') + '</div></div>' +
+    '<span style="font-size:14px;color:var(--m2)">' + (isExp?'▴':'▾') + '</span></div>' +
+    (isExp ? '<div style="padding:12px 14px;border-top:1px solid var(--bdr)">' +
+    Object.keys(sess.exLogs).sort(function(a,b){return parseInt(a)-parseInt(b);}).map(function(ei) {
+      var exLog = sess.exLogs[ei];
+      var ex = exLog.exInfo;
+      if (!ex) return '';
+      var loggedName = Object.values(exLog.sets)[0] ? (Object.values(exLog.sets)[0].exName || ex.n) : ex.n;
+      var sets = Object.keys(exLog.sets).sort(function(a,b){return parseInt(a)-parseInt(b);});
+      return '<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--bdr)">' +
+        '<div style="font-weight:600;font-size:12px;color:#fff;margin-bottom:5px"><span class="pill pill-blue" style="font-size:8px;margin-right:5px">' + ex.t + '</span>' + loggedName + '</div>' +
+        '<div style="display:flex;gap:5px;flex-wrap:wrap">' +
+        sets.map(function(si) {
+          var lg = exLog.sets[si];
+          if (!lg||!lg.done) return '<span class="pill" style="background:var(--c2);color:var(--m2);border:1px solid var(--bdr)">S' + (parseInt(si)+1) + '</span>';
+          return '<span class="pill pill-green">S' + (parseInt(si)+1) + ' ' + (lg.weight?'<strong>'+lg.weight+'kg</strong>':'-') + (lg.reps?' × '+lg.reps:'') + (lg.rpe?'<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+rpeColor(lg.rpe)+';margin-left:3px;vertical-align:middle"></span>':'') + '</span>';
+        }).join('') + '</div></div>';
+    }).join('') +
+    (sn&&sn.client?'<div style="margin-top:6px;padding:7px 10px;background:rgba(16,185,129,.06);border-radius:8px;border-left:2px solid var(--green)"><div style="font-size:9px;font-weight:700;color:var(--green);margin-bottom:2px">CLIENT NOTE</div><div style="font-size:11px;color:var(--m1)">"' + sn.client + '"</div></div>':'') +
+    '<div style="display:flex;gap:6px;align-items:flex-end;margin-top:10px">' +
+    '<textarea class="inp" id="sn_' + sess.sk + '" rows="2" placeholder="Add coaching note for this session..." style="flex:1;min-height:36px">' + (sn&&sn.trainer?sn.trainer:'') + '</textarea>' +
+    '<button class="btn btn-accent btn-sm" onclick="saveSessNoteTrainer('' + cid + '','' + sess.sk + '')">✓</button></div>' +
+    '</div>' : '') + '</div>';
+}
+
+function getLatestTrNote(cid, cd) {
+  var sn = cd.sessNotes || {};
+  var notes = Object.values(sn).map(function(n){return n.trainer||'';}).filter(Boolean);
+  return notes.length ? notes[notes.length-1] : '';
+}
+
+function sendTrNote(cid) {
+  var ta = document.getElementById('tr_note');
+  if (!ta) return;
+  var cd = S.cliData[cid] || {};
+  var sn = cd.sessNotes || {};
+  var keys = Object.keys(sn).sort();
+  var key = keys.length ? keys[keys.length-1] : sessKey(S.clients[cid]&&S.clients[cid].week||1, 0);
+  if (fbReady) {
+    fbUpd('clients/' + cid + '/sessNotes/' + key, {trainer: ta.value, trainerTs: Date.now()});
+  }
+  toast('Note sent to ' + (S.clients[cid]?S.clients[cid].name:'client'), 'ok');
+}
+
+function saveSessNoteTrainer(cid, sk) {
+  var ta = document.getElementById('sn_' + sk);
+  if (!ta) return;
+  if (fbReady) fbUpd('clients/' + cid + '/sessNotes/' + sk, {trainer: ta.value, trainerTs: Date.now()});
+  toast('Note saved', 'ok');
+}
+
+// ── Trainer: Progress Tab ──
+function renderCliProgress(cid, cd, c) {
+  var logs = cd.logs || {};
+  var prs = Object.values(cd.prs || {});
+  var pd = buildProgressData(logs, cid);
+  var cu = c.unit || 'kg';
+  return (prs.length ? '<div class="sect">🏆 PERSONAL RECORDS</div>' +
+    prs.slice(0,6).map(function(pr) {
+      return '<div class="card"><div class="card-body" style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div><div style="font-weight:600;font-size:13px;color:#fff">' + pr.exName + '</div><div style="font-size:10px;color:var(--m1)">' + fmtDate(pr.date) + '</div></div>' +
+        '<div style="text-align:right"><div style="font-size:15px;font-weight:800;color:var(--amber)">' + pr.weight + cu + ' × ' + pr.reps + '</div>' +
+        '<div style="font-size:10px;color:var(--m2)">~' + Math.round(pr.est) + cu + ' est 1RM</div></div></div></div>';
+    }).join('') : '') +
+    '<div class="sect">WEIGHT PROGRESSION</div>' +
+    (pd.length === 0 ? '<div class="empty">No weight data yet.</div>' : pd.slice(0,8).map(function(p) { return renderProgressBar(p, cu); }).join(''));
+}
+
+function buildProgressData(logs, cid) {
+  var ex = {};
+  var progs = getPrograms(cid);
+  Object.keys(logs).forEach(function(key) {
+    var l = logs[key]; if (!l||!l.done||!l.weight) return;
+    var p = key.split('_');
+    var w = parseInt(p[0].replace('w','')), d = parseInt(p[1].replace('d','')), ei = parseInt(p[2].replace('e',''));
+    // Find exercise name across all programs
+    var exName = l.exName;
+    if (!exName) {
+      for (var pi = 0; pi < progs.length; pi++) {
+        var prog = progs[pi];
+        if (prog.days && prog.days[d] && prog.days[d].ex && prog.days[d].ex[ei]) {
+          exName = prog.days[d].ex[ei].n; break;
+        }
+      }
+    }
+    if (!exName) return;
+    var k = exName.replace(/[^a-zA-Z0-9]/g,'_');
+    if (!ex[k]) ex[k] = {name:exName, bw:{}};
+    var wt = parseFloat(l.weight)||0;
+    if (!ex[k].bw[w] || wt > ex[k].bw[w]) ex[k].bw[w] = wt;
+  });
+  return Object.values(ex).filter(function(e){return Object.keys(e.bw).length>0;});
+}
+
+function renderProgressBar(pd, unit) {
+  var ws = Object.entries(pd.bw).sort(function(a,b){return parseInt(a)-parseInt(b);});
+  if (!ws.length) return '';
+  var mx = Math.max.apply(null, ws.map(function(x){return x[1];}));
+  var lw = ws[ws.length-1][1], fw = ws[0][1];
+  var imp = lw > fw;
+  return '<div class="card"><div class="card-body">' +
+    '<div style="display:flex;justify-content:space-between;margin-bottom:8px">' +
+    '<div style="font-weight:700;font-size:12px;color:#fff">' + pd.name + '</div>' +
+    (imp ? '<span style="font-size:10px;color:var(--green);font-weight:700">+' + (lw-fw).toFixed(1) + unit + ' ↑</span>' : '') +
+    '</div>' +
+    ws.map(function(entry) {
+      var wn = entry[0], wt = entry[1];
+      var pct = mx > 0 ? (wt/mx)*100 : 0;
+      var isPR = wt === mx && ws.length > 1;
+      return '<div class="pr-bar-row">' +
+        '<span style="font-size:10px;font-weight:700;width:20px;flex-shrink:0;color:' + (WK_LABELS[wn]?WK_LABELS[wn].c:'#fff') + '">'+wn+'</span>' +
+        '<div class="pr-bar-bg"><div class="pr-bar-fill" style="width:' + pct + '%;background:' + (isPR?'var(--amber)':'var(--green)') + '"></div></div>' +
+        '<span class="pr-bar-val">' + wt + unit + (isPR?'<span class="pr-tag">PR</span>':'') + '</span></div>';
+    }).join('') + '</div></div>';
+}
+
+// ── Trainer: Sessions Tab ──
+function renderCliSessions(cid, cd, c) {
+  var sessions = Object.values(c.sessions||{}).sort(function(a,b){return (b.date||'').localeCompare(a.date||'');});
+  return '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+    '<div class="sect" style="margin:0">SESSIONS</div>' +
+    '<button class="btn btn-pink btn-sm" style="background:var(--pink)" onclick="openBookSession('' + cid + '')">+ Book</button></div>' +
+    (sessions.length === 0 ? '<div class="empty">No sessions booked yet.</div>' :
+    '<div class="card"><div class="card-body">' +
+    sessions.map(function(s) {
+      var isDone = s.status === 'done';
+      return '<div class="sess-item">' +
+        '<div class="sess-time"><div class="sess-time-h">' + (s.time||'--') + '</div><div class="sess-time-d">' + fmtDate(s.date) + '</div></div>' +
+        '<div class="sess-dot" style="background:' + (isDone?'#4a5568':c.type==='online'?'#6366f1':'#10b981') + '"></div>' +
+        '<div class="sess-info"><div class="sess-name" style="color:' + (isDone?'var(--m2)':'#fff') + '">' + (isDone?'✓ Done':'Upcoming') + '</div>' +
+        '<div class="sess-meta">' + (c.type==='online'?'Online':'In Person') + (s.note?' · '+s.note:'') + '</div></div>' +
+        (!isDone ? '<button class="btn btn-green btn-sm" onclick="confirmComplete('' + cid + '','' + s.id + '')">Done ✓</button>' : '') +
+        '</div>';
+    }).join('') + '</div></div>');
+}
+
+// ── Trainer: Payments Tab ──
+function renderCliPayments(cid, cd, c) {
+  var bal = c.balance || 0;
+  var pays = Object.values(c.payments||{}).sort(function(a,b){return b.ts-a.ts;});
+  return (bal <= 2 ? '<div class="alert ' + (bal===0?'alert-red':'alert-amber') + '" style="margin-bottom:14px">' +
+    '<div class="alert-icon">' + (bal===0?'🚨':'⚠️') + '</div>' +
+    '<div class="alert-text"><div class="alert-title">' + (bal===0?'No sessions remaining':'Running low') + '</div>' +
+    '<div style="font-size:11px;color:var(--m1)">' + (bal===0?c.name+' needs to pay before next session':'Only '+bal+' session'+(bal===1?'':'s')+' left') + '</div></div>' +
+    '<button class="btn btn-red btn-sm" onclick="sendPayReminder('' + cid + '')">💬 Remind</button></div>' : '') +
+    '<div class="sect">PAYMENT HISTORY</div>' +
+    (pays.length === 0 ? '<div class="empty">No payments yet.</div>' :
+    '<div class="card"><div class="card-body">' +
+    pays.map(function(p) {
+      return '<div class="pay-item"><div><div class="pay-amt">+£' + p.amount + '</div>' +
+        '<div class="pay-info">' + fmtDate(p.date) + ' · ' + p.sessions + ' session' + (p.sessions===1?'':'s') + ' added' + (p.note?' · '+p.note:'') + '</div></div></div>';
+    }).join('') + '</div></div>') +
+    '<div class="sect">LOG PAYMENT</div>' +
+    '<div class="card"><div class="card-body">' +
+    '<div class="row"><div class="lbl">Amount (£)</div><input class="inp" id="pay_amt" type="number" placeholder="e.g. 240" inputmode="decimal"></div>' +
+    '<div class="row"><div class="lbl">Note (optional)</div><input class="inp" id="pay_note" placeholder="e.g. Bank transfer Mar"></div>' +
+    '<div style="font-size:11px;color:var(--m1);margin-bottom:10px;padding:7px 10px;background:var(--c2);border-radius:8px">Rate: ' + getCurrency(cid) + (c.rate||0) + '/session - Amount divided by rate = sessions added automatically</div>' +
+    '<button class="btn btn-green" onclick="doPayment('' + cid + '')">LOG PAYMENT ✓</button>' +
+    '</div></div>';
+}
+
+function doPayment(cid) {
+  var amt = parseFloat((document.getElementById('pay_amt')||{}).value||'0')||0;
+  var note = ((document.getElementById('pay_note')||{}).value||'').trim();
+  if (!amt) { toast('Enter payment amount', 'err'); return; }
+  logPayment(cid, amt, note);
+}
+
+function sendPayReminder(cid) {
+  var c = S.clients[cid];
+  var bal = c ? (c.balance||0) : 0;
+  var msg = 'Hi ' + (c?c.name:'') + ', just a reminder that you have ' + bal + ' session' + (bal===1?'':'s') + ' remaining. Please arrange payment at your convenience. Thank you!';
+  sendMessage(msg, 'trainer', cid);
+  toast('Reminder sent', 'ok');
+}
+
+// ── Trainer: Chat Tab ──
+function renderCliChat(cid, cd, c) {
+  markMessagesRead(cid, 'trainer');
+  var msgs = cd.messages ? Object.keys(cd.messages).map(function(id){return Object.assign({id:id},cd.messages[id]);}).sort(function(a,b){return a.ts-b.ts;}) : [];
+  return '<div class="chat-wrap" id="msgList">' +
+    (msgs.length===0?'<div class="empty">No messages yet.</div>':'') +
+    msgs.map(function(m) {
+      var isMe = m.from === 'trainer';
+      return '<div class="chat-msg ' + (isMe?'from-me':'from-them') + '">' +
+        '<div class="bubble">' + m.text + '</div>' +
+        '<div class="chat-time">' + (isMe?'You':c.name) + ' · ' + fmtTime(m.ts) + '</div></div>';
+    }).join('') + '</div>' +
+    '<div class="chat-input">' +
+    '<textarea class="chat-ta" id="tr_msg" placeholder="Message ' + c.name + '..." rows="1"></textarea>' +
+    '<button class="chat-send" onclick="doSendTrMsg('' + cid + '')">➤</button></div>';
+}
+
+function doSendTrMsg(cid) {
+  var ta = document.getElementById('tr_msg');
+  if (!ta || !ta.value.trim()) return;
+  sendMessage(ta.value, 'trainer', cid);
+  ta.value = '';
+  R();
+}
+
+// ═══════════════════════════════════════════
+// SCHEDULE VIEW
+// ═══════════════════════════════════════════
+function renderSchedule() {
+  var all = getAllUpcoming();
+  var todaySess = all.filter(function(s){return s.date===today();});
+  var future = all.filter(function(s){return s.date>today();});
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">All Sessions</div><div class="hdr-title">Schedule</div></div>' +
+    '<button class="btn btn-pink btn-sm" style="background:var(--pink)" onclick="openBookSession(null)">+ Book</button>' +
+    '</div></div><div class="page">' +
+    (todaySess.length>0?'<div class="sect">TODAY - ' + fmtDate(today()) + '</div><div class="card"><div class="card-body">' +
+    todaySess.map(function(s){return sessRow(s);}).join('') + '</div></div>':'') +
+    '<div class="sect">UPCOMING</div>' +
+    (future.length===0&&todaySess.length===0?'<div class="empty">No sessions scheduled.</div>':'') +
+    future.map(function(s) {
+      return '<div class="card" style="margin-bottom:8px"><div class="card-body">' + sessRow(s) + '</div></div>';
+    }).join('') + '</div>' + trainerNav();
+}
+
+function sessRow(s) {
+  return '<div class="sess-item">' +
+    '<div class="sess-time"><div class="sess-time-h">' + (s.time||'--:--') + '</div><div class="sess-time-d">' + fmtDate(s.date) + '</div></div>' +
+    '<div class="sess-dot" style="background:' + (s.clientType==='online'?'#6366f1':'#10b981') + '"></div>' +
+    '<div class="sess-info"><div class="sess-name">' + s.clientName + '</div>' +
+    '<div class="sess-meta">' + (s.clientType==='online'?'🌐 Online':'🏋️ In Person') + (s.note?' · '+s.note:'') + '</div></div>' +
+    '<button class="btn btn-green btn-sm" onclick="confirmComplete('' + s.clientId + '','' + s.id + '')">✓</button></div>';
+}
+
+// ═══════════════════════════════════════════
+// FINANCE VIEW
+// ═══════════════════════════════════════════
+function renderFinance() {
+  var cs = Object.entries(S.clients);
+  var now = new Date();
+  var mn = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+  var totalRev = 0, allTimeRev = 0;
+  var breakdown = cs.map(function(entry) {
+    var cid = entry[0], c = entry[1];
+    var rev = 0;
+    Object.values(c.payments||{}).forEach(function(p){if(p.date&&p.date.startsWith(mn))rev+=p.amount||0;allTimeRev+=p.amount||0;});
+    totalRev += rev;
+    return {cid:cid, name:c.name, type:c.type, rate:c.rate||0, rev:rev, balance:c.balance||0};
+  });
+  allTimeRev = 0;
+  cs.forEach(function(entry){ var c=entry[1]; Object.values(c.payments||{}).forEach(function(p){allTimeRev+=p.amount||0;}); });
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">Finance</div><div class="hdr-title">Money</div></div>' +
+    '<div style="font-size:11px;color:var(--m1);font-weight:600">' + fmtMonth(today()) + '</div>' +
+    '</div></div><div class="page">' +
+    '<div class="sgrid">' +
+    '<div class="scard"><div class="sval" style="color:var(--green)">£' + totalRev.toLocaleString() + '</div><div class="slbl">This Month</div></div>' +
+    '<div class="scard"><div class="sval" style="color:var(--amber)">£' + allTimeRev.toLocaleString() + '</div><div class="slbl">All Time</div></div>' +
+    '<div class="scard"><div class="sval" style="color:var(--blue)">' + cs.length + '</div><div class="slbl">Active Clients</div></div>' +
+    '<div class="scard"><div class="sval" style="color:var(--red)">' + breakdown.filter(function(c){return c.balance<=0;}).length + '</div><div class="slbl">Owe Payment</div></div>' +
+    '</div>' +
+    '<div class="sect">PER CLIENT - ' + fmtMonth(today()) + '</div>' +
+    (breakdown.length===0?'<div class="empty">Add clients to see breakdown.</div>':'') +
+    breakdown.map(function(c) {
+      return '<div class="ccard" onclick="openClient('' + c.cid + '')">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">' +
+        '<div style="display:flex;align-items:center;gap:7px"><div class="cname">' + c.name + '</div>' +
+        '<span class="pill ' + (c.type==='online'?'pill-purple':'pill-green') + '">' + (c.type==='online'?'🌐':'🏋️') + '</span></div>' +
+        '<div style="text-align:right"><div style="font-size:16px;font-weight:800;color:var(--green)">£' + c.rev.toLocaleString() + '</div></div></div>' +
+        '<div class="cmeta"><span>Rate: ' + (c.rate?'£'+c.rate+'/sess':'not set') + '</span>' +
+        '<span class="pill ' + (c.balance===0?'pill-red':c.balance<=2?'pill-amber':'pill-green') + '">' + c.balance + ' sessions left</span></div></div>';
+    }).join('') +
+    '<div class="sect">LOG PAYMENT</div>' +
+    '<div class="card"><div class="card-body">' +
+    '<div class="row"><div class="lbl">Client</div>' +
+    '<select class="sel" id="fp_cli">' + cs.map(function(entry){var cid=entry[0],c=entry[1];return '<option value="'+cid+'">'+c.name+' (£'+(c.rate||0)+'/sess · '+(c.balance||0)+' left)</option>';}).join('') + '</select></div>' +
+    '<div class="row"><div class="lbl">Amount (£)</div><input class="inp" id="fp_amt" type="number" placeholder="e.g. 240" inputmode="decimal"></div>' +
+    '<button class="btn btn-green" onclick="doFinancePayment()">LOG PAYMENT ✓</button>' +
+    '</div></div>' +
+    '</div>' + trainerNav();
+}
+
+function doFinancePayment() {
+  var cid = (document.getElementById('fp_cli')||{}).value;
+  var amt = parseFloat((document.getElementById('fp_amt')||{}).value||'0')||0;
+  if (!cid || !amt) { toast('Select client and enter amount', 'err'); return; }
+  var c = S.clients[cid];
+  logPayment(cid, amt, '');
+  document.getElementById('fp_amt').value = '';
+}
+
+// ═══════════════════════════════════════════
+// MODALS - PROGRAMS
+// ═══════════════════════════════════════════
+function openAddProgram(cid) {
+  var saved = DB.get('prog_templates') || [];
+  var tkeys = Object.keys(TEMPLATES);
+  showModal('<div class="modal-bg" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">' +
+    '<div class="modal-title">Add Program to ' + (S.clients[cid]?S.clients[cid].name:'Client') + '</div>' +
+    (saved.length > 0 ?
+      '<div class="sect" style="margin-top:0">YOUR SAVED PROGRAMS</div>' +
+      saved.map(function(t,i) {
+        return '<div style="display:flex;gap:8px;margin-bottom:8px;align-items:center">' +
+          '<button class="btn btn-accent" style="flex:1;text-align:left;display:flex;justify-content:space-between;align-items:center;padding:10px 12px" onclick="addProgFromSaved('' + cid + '',' + i + ')">' +
+          '<div><div style="font-size:13px;font-weight:700">' + t.name + '</div>' +
+          '<div style="font-size:10px;opacity:.7;margin-top:1px">' + (t.days?t.days.length:0) + ' days</div></div><span>→</span></button>' +
+          '<button onclick="deleteTemplate(' + i + ')" style="padding:8px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;color:#f87171;font-size:11px;cursor:pointer">✕</button></div>';
+      }).join('') : '') +
+    '<div class="sect">BUILT-IN TEMPLATES</div>' +
+    tkeys.map(function(k) {
+      var t = TEMPLATES[k];
+      return '<button class="btn btn-ghost" style="margin-bottom:8px;text-align:left;display:flex;justify-content:space-between;align-items:center" onclick="addProgFromTemplate('' + cid + '','' + k + '')">' +
+        '<div><div style="font-size:13px;color:#fff;font-weight:700">' + t.name + '</div>' +
+        '<div style="font-size:10px;color:var(--m1);margin-top:2px">' + t.days.length + ' days</div></div>' +
+        '<span style="font-size:16px">→</span></button>';
+    }).join('') +
+    '<div class="sect">BUILD FROM SCRATCH</div>' +
+    '<div class="row"><div class="lbl">Program Name</div><input class="inp" id="np_name" placeholder="e.g. Strength Block Phase 2"></div>' +
+    '<button class="btn btn-accent" style="margin-bottom:8px" onclick="startProgBuilder('' + cid + '')">BUILD CUSTOM PROGRAM →</button>' +
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
+    '</div></div>');
+}
+
+function addProgFromSaved(cid, idx) {
+  var saved = DB.get('prog_templates') || [];
+  var t = saved[idx]; if (!t) return;
+  var prog = JSON.parse(JSON.stringify(t));
+  prog.id = 'prog_' + Date.now(); prog.created = Date.now();
+  var progs = getPrograms(cid); progs.push(prog);
+  DB.set('progs_' + cid, progs);
+  var cp = DB.get('cp_' + cid) || {}; cp.currentProgId = prog.id;
+  DB.set('cp_' + cid, cp);
+  if (fbReady) fbUpd('clients/' + cid + '/meta', {program:prog.name, currentProgId:prog.id});
+  closeModal(); toast(prog.name + ' added', 'ok'); R();
+}
+
+function deleteTemplate(idx) {
+  if (!confirm('Delete this template?')) return;
+  var saved = DB.get('prog_templates') || [];
+  saved.splice(idx, 1); DB.set('prog_templates', saved);
+  toast('Template deleted', 'ok');
+  openAddProgram(S.vCli);
+}
+
+var _bp = {cid:null, prog:null};
+var _bpDay = -1;
+
+function startProgBuilder(cid) {
+  var name = ((document.getElementById('np_name')||{}).value||'').trim();
+  if (!name) { toast('Enter a program name first', 'err'); return; }
+  _bp.cid = cid;
+  _bp.prog = {id:'prog_'+Date.now(), name:name, days:[], created:Date.now()};
+  showProgBuilder();
+}
+
+function showProgBuilder() {
+  var p = _bp.prog;
+  showModal('<div class="modal-bg"><div class="modal-box" style="max-height:95vh">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
+    '<div style="font-size:18px;font-weight:800;color:#fff">' + p.name + '</div>' +
+    '<div style="display:flex;gap:6px"><button class="btn btn-green btn-sm" onclick="doSaveProgram()">Save & Use</button>' +
+    '<button class="btn btn-ghost btn-sm" onclick="closeModal()">Cancel</button></div></div>' +
+    p.days.map(function(d, di) {
+      return '<div style="background:var(--c2);border:1px solid var(--bdr);border-radius:12px;padding:12px;margin-bottom:10px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">' +
+        '<div style="flex:1">' +
+        '<div style="font-size:11px;font-weight:700;color:' + d.accent + ';margin-bottom:4px">' + d.tag + '</div>' +
+        '<div style="font-size:14px;font-weight:700;color:#fff">' + d.title + '</div>' +
+        (d.sub?'<div style="font-size:10px;color:var(--m1)">' + d.sub + '</div>':'') + '</div>' +
+        '<button onclick="removeDay(' + di + ')" style="color:var(--red);font-size:18px;background:none;border:none;cursor:pointer;padding:0 4px">×</button></div>' +
+        (d.ex.length > 0 ?
+          d.ex.map(function(ex, ei) {
+            return '<div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)">' +
+              '<div style="flex:1"><div style="font-size:12px;font-weight:600;color:#fff">' + ex.n + '</div>' +
+              '<div style="font-size:10px;color:var(--m1)">' + ex.sets + ' sets · ' + ex.r + ' reps · ' + (ex.rest||'') + '</div></div>' +
+              '<button onclick="removeExercise(' + di + ',' + ei + ')" style="color:var(--red);background:none;border:none;cursor:pointer;font-size:14px">×</button></div>';
+          }).join('') : '<div style="font-size:11px;color:var(--m2);padding:6px 0">No exercises yet</div>') +
+        '<button onclick="openAddEx(' + di + ')" style="width:100%;padding:7px;background:rgba(99,102,241,.06);border:1px dashed rgba(99,102,241,.25);border-radius:8px;color:var(--acc);font-size:11px;font-weight:700;margin-top:8px;cursor:pointer">+ Add Exercise</button>' +
+        '</div>';
+    }).join('') +
+    '<button onclick="addDay()" style="width:100%;padding:10px;background:rgba(16,185,129,.06);border:1px dashed rgba(16,185,129,.25);border-radius:10px;color:var(--green);font-size:12px;font-weight:700;margin-bottom:12px;cursor:pointer">+ Add Training Day</button>' +
+    '<div style="padding:9px 11px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.12);border-radius:8px;font-size:10px;color:var(--m1);line-height:1.6">After saving, this program is stored as a reusable template you can assign to any client instantly.</div>' +
+    '</div></div>');
+}
+
+function addDay() {
+  var di = _bp.prog.days.length;
+  var accents = ['#ef4444','#10b981','#3b82f6','#a855f7','#ec4899','#f59e0b'];
+  _bp.prog.days.push({tag:'Day '+(di+1), title:'Day '+(di+1), sub:'', accent:accents[di%6], ex:[]});
+  showProgBuilder();
+}
+
+function removeDay(di) {
+  _bp.prog.days.splice(di,1);
+  _bp.prog.days.forEach(function(d,i){d.tag='Day '+(i+1);});
+  showProgBuilder();
+}
+
+function removeExercise(di, ei) {
+  _bp.prog.days[di].ex.splice(ei,1);
+  showProgBuilder();
+}
+
+function openAddEx(di) {
+  _bpDay = di;
+  showModal('<div class="modal-bg"><div class="modal-box">' +
+    '<div class="modal-title">Add Exercise — Day ' + (di+1) + '</div>' +
+    '<div class="row"><div class="lbl">Exercise Name</div><input class="inp" id="aex_n" placeholder="e.g. Barbell Back Squat" autofocus></div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
+    '<div><div class="lbl">Sets</div><input class="inp" id="aex_sets" type="number" value="3" inputmode="numeric" style="margin-bottom:0"></div>' +
+    '<div><div class="lbl">Rep Range</div><input class="inp" id="aex_r" placeholder="8-12" style="margin-bottom:0"></div>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
+    '<div><div class="lbl">Type</div><select class="sel" id="aex_t"><option>Compound</option><option>Isolation</option><option>Unilateral</option><option>Abs</option><option>Finisher</option></select></div>' +
+    '<div><div class="lbl">Muscle Group</div><input class="inp" id="aex_m" placeholder="e.g. Quads" style="margin-bottom:0"></div>' +
+    '</div>' +
+    '<div class="row"><div class="lbl">Rest Period</div><input class="inp" id="aex_rest" placeholder="e.g. 90s"></div>' +
+    '<div class="row"><div class="lbl">Coaching Cue (optional)</div><textarea class="inp" id="aex_note" rows="2" placeholder="Form tip..."></textarea></div>' +
+    '<div class="row"><div class="lbl">Alternatives (comma separated)</div><input class="inp" id="aex_alt" placeholder="e.g. Goblet Squat, Smith Squat"></div>' +
+    '<button class="btn btn-accent" style="margin-bottom:8px" onclick="doAddExercise()">ADD EXERCISE →</button>' +
+    '<button class="btn btn-ghost" onclick="showProgBuilder()">← Back</button>' +
+    '</div></div>');
+}
+
+function doAddExercise() {
+  var n = ((document.getElementById('aex_n')||{}).value||'').trim();
+  var sets = parseInt((document.getElementById('aex_sets')||{}).value)||3;
+  var r = ((document.getElementById('aex_r')||{}).value||'8-12').trim();
+  var t = (document.getElementById('aex_t')||{}).value||'Compound';
+  var m = ((document.getElementById('aex_m')||{}).value||'').trim();
+  var rest = ((document.getElementById('aex_rest')||{}).value||'90s').trim();
+  var note = ((document.getElementById('aex_note')||{}).value||'').trim();
+  var altRaw = ((document.getElementById('aex_alt')||{}).value||'').trim();
+  var alt = altRaw ? altRaw.split(',').map(function(a){return a.trim();}).filter(Boolean) : [];
+  if (!n) { toast('Enter exercise name', 'err'); return; }
+  _bp.prog.days[_bpDay].ex.push({n:n, sets:sets, r:r, t:t, m:m||'', rest:rest, note:note, alt:alt});
+  showProgBuilder();
+}
+
+function doSaveProgram() {
+  var prog = _bp.prog; var cid = _bp.cid;
+  if (!prog.days.length) { toast('Add at least one training day', 'err'); return; }
+  var progs = getPrograms(cid); progs.push(prog);
+  DB.set('progs_' + cid, progs);
+  var cp = DB.get('cp_' + cid) || {}; cp.currentProgId = prog.id;
+  DB.set('cp_' + cid, cp);
+  if (fbReady) fbUpd('clients/' + cid + '/meta', {program:prog.name, currentProgId:prog.id});
+  var templates = DB.get('prog_templates') || [];
+  templates.push(JSON.parse(JSON.stringify(prog)));
+  DB.set('prog_templates', templates);
+  closeModal();
+  toast(prog.name + ' saved as template and assigned!', 'ok');
+  R();
+}
+
+
+function addProgFromTemplate(cid, templateKey) {
+  var t = TEMPLATES[templateKey];
+  if (!t) return;
+  var prog = JSON.parse(JSON.stringify(t)); // deep copy
+  prog.id = 'prog_' + Date.now();
+  prog.created = Date.now();
+  var progs = getPrograms(cid);
+  progs.push(prog);
+  DB.set('progs_' + cid, progs);
+  // Set as current
+  var cp = DB.get('cp_' + cid) || {};
+  cp.currentProgId = prog.id;
+  DB.set('cp_' + cid, cp);
+  if (fbReady) fbUpd('clients/' + cid + '/meta', {program: prog.name, currentProgId: prog.id});
+  closeModal();
+  toast(prog.name + ' added', 'ok');
+  R();
+}
+
+function addProgBlank(cid) {
+  var name = ((document.getElementById('np_name')||{}).value||'').trim();
+  if (!name) { toast('Enter a program name', 'err'); return; }
+  var prog = {id: 'prog_'+Date.now(), name:name, days:[], created:Date.now()};
+  var progs = getPrograms(cid);
+  progs.push(prog);
+  DB.set('progs_' + cid, progs);
+  var cp = DB.get('cp_' + cid) || {};
+  cp.currentProgId = prog.id;
+  DB.set('cp_' + cid, cp);
+  closeModal();
+  toast(name + ' created', 'ok');
+  R();
+}
+
+// ═══════════════════════════════════════════
+// MODALS - BOOK SESSION
+// ═══════════════════════════════════════════
+function openBookSession(cid) {
+  var cs = Object.entries(S.clients);
+  showModal('<div class="modal-bg" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">' +
+    '<div class="modal-title">Book Session</div>' +
+    '<div class="row"><div class="lbl">Client</div>' +
+    '<select class="sel" id="bs_cli">' + cs.map(function(e){return '<option value="'+e[0]+'"'+(cid&&cid===e[0]?' selected':'')+'>'+e[1].name+'</option>';}).join('') + '</select></div>' +
+    '<div class="row"><div class="lbl">Date</div><input class="inp" id="bs_date" type="date" value="' + today() + '"></div>' +
+    '<div class="row"><div class="lbl">Time</div><input class="inp" id="bs_time" type="time" value="10:00"></div>' +
+    '<div class="row"><div class="lbl">Note (optional)</div><input class="inp" id="bs_note" placeholder="e.g. Legs day"></div>' +
+    '<button class="btn btn-pink" style="background:var(--pink);margin-bottom:8px" onclick="doBookSession()">BOOK →</button>' +
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
+    '</div></div>');
+}
+
+function doBookSession() {
+  var cid = (document.getElementById('bs_cli')||{}).value;
+  var date = (document.getElementById('bs_date')||{}).value;
+  var time = (document.getElementById('bs_time')||{}).value;
+  var note = ((document.getElementById('bs_note')||{}).value||'').trim();
+  if (!cid || !date) { toast('Select client and date', 'err'); return; }
+  var c = S.clients[cid];
+  bookSession(cid, {date:date, time:time, type:c?c.type:'inperson', note:note});
+  closeModal(); R();
+}
+
+function confirmComplete(cid, sessId) {
+  var c = S.clients[cid] || {};
+  showModal('<div class="modal-bg" onclick="closeModal()"><div class="modal-box" onclick="event.stopPropagation()">' +
+    '<div style="text-align:center;padding:20px 0">' +
+    '<div style="font-size:48px;margin-bottom:12px">✅</div>' +
+    '<div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:8px">' + c.name + '</div>' +
+    '<div style="font-size:13px;color:var(--m1);margin-bottom:6px">Mark session as completed?</div>' +
+    '<div style="font-size:13px;color:var(--amber);font-weight:700;margin-bottom:20px">1 session deducted from balance</div>' +
+    '</div>' +
+    '<button class="btn btn-green" style="margin-bottom:8px" onclick="doComplete('' + cid + '','' + sessId + '')">YES - DONE ✓</button>' +
+    '<button class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
+    '</div></div>');
+}
+
+function doComplete(cid, sessId) {
+  completeSession(cid, sessId);
+  closeModal(); R();
+}
+
+// ═══════════════════════════════════════════
+// CLIENT SHELL
+// ═══════════════════════════════════════════
+function renderClient() {
+  if (S.cTab === 'workout') return renderWorkout();
+  if (S.cTab === 'progress') return renderProgress();
+  if (S.cTab === 'sessions') return renderMySessions();
+  if (S.cTab === 'account') return renderMyAccount();
+  if (S.cTab === 'messages') return renderMessages();
+  return renderWorkout();
+}
+
+function clientNav() {
+  var days = getDays();
+  var tabs = [];
+  // Day tabs for workout
+  days.forEach(function(d, i) {
+    tabs.push({id:'day_'+i, icon:['💪','🦵','🔵','🟣','🔴'][i]||'💪', label:d.tag, isDayTab:true, dayIdx:i});
+  });
+  // Other tabs
+  tabs.push({id:'sessions', icon:'📅', label:'Sessions'});
+  tabs.push({id:'account', icon:'💳', label:'Account'});
+  tabs.push({id:'progress', icon:'📈', label:'Progress'});
+  tabs.push({id:'messages', icon:'💬', label:'Ahmed', badge:S.unread});
+  return '<nav class="bnav">' + tabs.map(function(t) {
+    var on = t.isDayTab ? (S.cTab==='workout'&&S.day===t.dayIdx) : S.cTab===t.id;
+    var color = on ? (t.isDayTab && getDay() ? getDay().accent||'var(--acc)' : 'var(--acc)') : 'var(--m2)';
+    var click = t.isDayTab ? 'selDay(' + t.dayIdx + ')' : 'S.cTab='' + t.id + '';R()';
+    return '<button class="nb" onclick="' + click + '" style="color:' + color + '">' +
+      '<span class="nb-icon">' + t.icon + '</span>' + t.label +
+      (t.badge&&t.badge>0?'<span class="nb-badge">'+t.badge+'</span>':'') + '</button>';
+  }).join('') + '</nav>';
+}
+
+// ═══════════════════════════════════════════
+// CLIENT: WORKOUT
+// ═══════════════════════════════════════════
+function renderWorkout() {
+  var d = getDay();
+  var cp = DB.get('cp_' + S.cid) || {};
+  var wk = WK_LABELS[S.week] || WK_LABELS[1];
+  var prog = {done:0, total:0};
+  if (d) prog = sessProgress();
+  var pct = prog.total > 0 ? (prog.done/prog.total*100) : 0;
+
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">AHMED PT <span class="sync-dot ' + (fbReady?'sync-on':'sync-off') + '"></span></div>' +
+    '<div class="hdr-title">' + (getClientProg() ? getClientProg().name : 'No Program') + '</div></div>' +
+    '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">' +
+    (S.streak.cur>0?'<span class="pill pill-amber">🔥 '+S.streak.cur+' days</span>':'') +
+    '<div style="display:flex;gap:3px">' + [1,2,3,4].map(function(w){
+      return '<button onclick="setWeek('+w+')" style="width:26px;height:26px;border-radius:50%;border:' + (w===S.week?'2px solid '+wk.c:'1px solid var(--bdr)') + ';background:' + (w===S.week?wk.c+'22':'transparent') + ';color:' + (w===S.week?wk.c:'var(--m2)') + ';font-size:11px;font-weight:700;cursor:pointer">' + w + '</button>';
+    }).join('') + '</div>' +
+    '<div style="display:flex;gap:3px"><button onclick="setUnit('kg')" style="padding:2px 7px;border-radius:8px;border:1px solid '+(S.unit==='kg'?'var(--acc)':'var(--bdr)')+';background:'+(S.unit==='kg'?'rgba(99,102,241,.15)':'transparent')+';color:'+(S.unit==='kg'?'var(--acc)':'var(--m2)')+';font-size:10px;font-weight:700;cursor:pointer">KG</button>' +
+    '<button onclick="setUnit('lb')" style="padding:2px 7px;border-radius:8px;border:1px solid '+(S.unit==='lb'?'var(--acc)':'var(--bdr)')+';background:'+(S.unit==='lb'?'rgba(99,102,241,.15)':'transparent')+';color:'+(S.unit==='lb'?'var(--acc)':'var(--m2)')+';font-size:10px;font-weight:700;cursor:pointer">LB</button></div>' +
+    '</div></div>' +
+    // Week banner
+    '<div class="wk-banner" style="border-color:'+wk.c+';background:'+wk.c+'0a">' +
+    '<div class="wk-name" style="color:'+wk.c+'">WK' + S.week + ' - ' + wk.l + '</div>' +
+    '<div class="wk-note">' + wk.n + '</div></div>' +
+    '</div>' +
+    // Day tabs
+    '<div style="display:flex;gap:3px;padding:10px 16px 0;background:rgba(7,7,14,.92);border-bottom:1px solid var(--bdr);overflow-x:auto;scrollbar-width:none">' +
+    getDays().map(function(dd, i) {
+      var on = i===S.day&&S.cTab==='workout';
+      return '<button class="t' + (on?' on':'') + '" onclick="selDay('+i+')" style="' + (on?'background:'+dd.accent+';border-color:'+dd.accent+';color:#fff':'') + '">' + dd.tag + '</button>';
+    }).join('') + '</div>' +
+    '<div class="page">' +
+    (!d ? '<div class="empty">No program assigned yet.<br>Ahmed will set up your program.</div>' :
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">' +
+    '<div><div style="font-size:26px;font-weight:900;color:#fff;letter-spacing:-.5px">' + d.title + '</div>' +
+    '<div style="font-size:10px;color:var(--m2);letter-spacing:1px;text-transform:uppercase;margin-top:2px">' + (d.sub||'') + '</div></div>' +
+    '<div style="text-align:right"><div style="font-size:24px;font-weight:900;color:' + d.accent + '">' + prog.done + '<span style="color:var(--m2)">/'+prog.total+'</span></div>' +
+    '<div style="width:80px;height:3px;background:var(--m3);border-radius:2px;margin-left:auto;margin-top:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+d.accent+';border-radius:2px;transition:width .3s"></div></div></div></div>' +
+    (d.coach?'<div style="padding:9px 12px;background:'+d.accent+'10;border-left:3px solid '+d.accent+';border-radius:0 9px 9px 0;margin-bottom:14px;font-size:11px;color:var(--m1);line-height:1.6"><strong style="color:'+d.accent+'">COACH: </strong>' + d.coach + '</div>':'') +
+    d.ex.map(function(ex, ei) { return renderExCard(ex, ei, d); }).join('') +
+    renderSessionNoteBox()) +
+    '</div>' + clientNav();
+}
+
+function renderExCard(origEx, ei, d) {
+  var ex = getEx(ei);
+  if (!ex) return '';
+  var sc = origEx.sets || 3;
+  var allDone = true;
+  for (var i=0;i<sc;i++){var l=getLog(S.week,S.day,ei,i);if(!l||!l.done){allDone=false;break;}}
+  var isOpen = S.aSet && S.aSet.ei===ei;
+  var exN = S.exNotes[exKey(S.week,S.day,ei)] || null;
+  var hasN = exN && (exN.client||exN.trainer);
+  var showNote = S.xNote===ei;
+  var showAlt = S.xAlt===ei;
+  var hasAlt = origEx.alt && origEx.alt.length>0;
+
+  return '<div class="ex-card' + (allDone?' done':'') + '" id="exc_'+ei+'">' +
+    '<div class="ex-hdr" onclick="toggleExNote('+ei+')">' +
+    '<div style="flex:1;min-width:0">' +
+    '<div class="ex-name">' + ex.n + (ex.swapped?'<span style="font-size:9px;color:var(--amber);margin-left:5px">(swapped)</span>':'') + '</div>' +
+    '<div class="ex-info">' +
+    '<span class="pill pill-blue" style="font-size:8px;margin-right:5px">' + origEx.t + '</span>' +
+    '<span class="pill" style="background:var(--c2);color:var(--m1);border:1px solid var(--bdr);font-size:8px;margin-right:5px">' + origEx.m + '</span>' +
+    '<span style="color:var(--m1);font-size:11px;font-weight:700">' + origEx.r + ' reps · ' + sc + ' sets · ' + origEx.rest + ' rest</span>' +
+    (hasN?'<span style="font-size:9px;color:var(--acc);margin-left:5px">📝</span>':'') +
+    '</div></div>' +
+    '<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">' +
+    (hasAlt?'<button class="pill pill-amber" onclick="event.stopPropagation();toggleAlt('+ei+')">↕ swap</button>':'') +
+    '<button onclick="event.stopPropagation();openYouTube('' + encodeURIComponent(ex.n) + '')" style="padding:3px 8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;color:#f87171;font-size:9px;font-weight:700">▶ YT</button>' +
+    '<span style="font-size:12px;color:var(--m2)">' + (showNote?'▴':'▾') + '</span>' +
+    '</div></div>' +
+    // Coaching cue
+    '<div class="ex-cue' + (showNote?' show':'') + '">' + (ex.note||origEx.note||'') + '</div>' +
+    // Alternatives
+    (showAlt&&hasAlt?'<div class="alt-wrap"><div class="alt-lbl">SWAP EXERCISE</div>' +
+    '<button class="alt-item" onclick="swapEx('+ei+',undefined)" style="' + (S.swaps[S.day+'_'+ei]===undefined?'background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3)':'') + '">' + origEx.n + ' (original)</button>' +
+    origEx.alt.map(function(a,ai){return '<button class="alt-item" onclick="swapEx('+ei+','+ai+')" style="'+(S.swaps[S.day+'_'+ei]===ai?'background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3)':'')+'">'+a+'</button>';}).join('') +
+    '</div>':'') +
+    // Set dots
+    '<div class="sets">' +
+    Array.from({length:sc}, function(_,si) {
+      var lg = getLog(S.week, S.day, ei, si);
+      var done = lg && lg.done;
+      var isAct = S.aSet && S.aSet.ei===ei && S.aSet.si===si;
+      return '<div class="sw" style="cursor:pointer" onclick="openSet('+ei+','+si+')">' +
+        '<div class="sdot' + (done?' done':'') + (isAct?' active':'') + '" style="border-color:'+(done?d.accent:isAct?d.accent:'var(--bdr)')+(done?';background:'+d.accent:'')+(isAct&&!done?';color:'+d.accent:'')+'">' +
+        (done?'✓':si+1) + '</div>' +
+        (done&&lg.weight?'<div class="sdot-w" style="color:'+d.accent+'">' + lg.weight + S.unit + '</div>':'') +
+        '</div>';
+    }).join('') + '</div>' +
+    // Log panel
+    (isOpen ? renderLogPanel(ei, S.aSet.si, d) : '') +
+    // Notes toggle
+    '<div style="border-top:1px solid var(--bdr)">' +
+    '<button onclick="event.stopPropagation();S.xNote=(S.xNote==='+ei+'?-1:'+ei+');R()" style="width:100%;padding:7px 13px;text-align:left;font-size:10px;font-weight:700;color:'+(hasN?d.accent:'var(--m2)');+';letter-spacing:1px;background:none;border:none;cursor:pointer">📝 ' + (showNote?'HIDE':'NOTES') + (hasN&&!showNote?' (has notes)':'') + '</button>' +
+    (showNote?renderExNoteBox(ei,exN,d):'') +
+    '</div></div>';
+}
+
+function renderLogPanel(ei, si, d) {
+  var ex = getEx(ei); if (!ex) return '';
+  var lg = getLog(S.week, S.day, ei, si) || {};
+  // Find previous
+  var prev = null;
+  for (var w=S.week-1;w>=1;w--){var pl=getLog(w,S.day,ei,si);if(pl&&pl.done){prev={data:pl,week:w};break;}}
+  return '<div class="lpanel">' +
+    '<div class="lpanel-title" style="color:' + d.accent + '">SET ' + (si+1) + ' - ' + ex.n.toUpperCase() + '</div>' +
+    (prev?'<div class="prev-data">Wk'+prev.week+': '+(prev.data.weight?'<strong>'+prev.data.weight+S.unit+'</strong>':'')+(prev.data.reps?' × '+prev.data.reps:'')+(prev.data.rpe?' · RPE '+prev.data.rpe+' ('+rpeName(prev.data.rpe)+')':'')+'</div>':'') +
+    '<div class="two-col">' +
+    '<div><div class="lbl">Weight (' + S.unit + ')</div>' +
+    '<input class="inp" type="number" id="inp_w" value="' + (lg.weight||'') + '" placeholder="' + (prev&&prev.data.weight?prev.data.weight:'e.g. 60') + '" inputmode="decimal" onfocus="this.style.borderColor='' + d.accent + ''" onblur="this.style.borderColor=''"></div>' +
+    '<div><div class="lbl">Reps done</div>' +
+    '<input class="inp" type="number" id="inp_r" value="' + (lg.reps||'') + '" placeholder="' + (prev&&prev.data.reps?prev.data.reps:'e.g. 8') + '" inputmode="numeric" onfocus="this.style.borderColor='' + d.accent + ''" onblur="this.style.borderColor=''"></div>' +
+    '</div>' +
+    '<div class="lbl">RPE - Rate of Perceived Exertion</div>' +
+    '<div class="rpe-btns">' +
+    [1,2,3,4,5,6,7,8,9,10].map(function(v){
+      return '<button class="rpe-btn" onclick="S.rpe='+(S.rpe===v?'null':v)+';R()" style="'+(S.rpe===v?'background:'+rpeColor(v)+';color:#fff;border-color:transparent;':'')+'">' + v + '</button>';
+    }).join('') +
+    (S.rpe?'<span style="font-size:11px;font-weight:700;color:'+rpeColor(S.rpe)+';margin-left:4px">'+rpeName(S.rpe)+'</span>':'') +
+    '</div>' +
+    '<div class="log-actions">' +
+    '<button class="btn btn-accent" style="flex:1;background:'+d.accent+'" onclick="doLogSet('+ei+','+si+')">✓ LOG SET</button>' +
+    (lg.done?'<button class="btn btn-ghost btn-sm" onclick="doClearSet('+ei+','+si+')">✕</button>':'') +
+    '<button class="btn btn-ghost btn-sm" onclick="S.aSet=null;S.rpe=null;R()">ESC</button>' +
+    '</div></div>';
+}
+
+function renderExNoteBox(ei, exN, d) {
+  var tN = exN&&exN.trainer?exN.trainer:'';
+  var cN = exN&&exN.client?exN.client:'';
+  return '<div style="padding:10px 13px;background:rgba(0,0,0,.2)">' +
+    (tN?'<div style="margin-bottom:7px"><div class="lbl" style="color:var(--blue)">AHMED'S NOTE</div><div style="padding:7px 10px;background:rgba(99,102,241,.08);border-radius:8px;border:1px solid rgba(99,102,241,.15);font-size:11px;color:var(--m1)">'+tN+'</div></div>':'') +
+    (cN?'<div style="margin-bottom:7px"><div class="lbl" style="color:var(--green)">YOUR NOTE</div><div style="padding:7px 10px;background:rgba(16,185,129,.06);border-radius:8px;border:1px solid rgba(16,185,129,.15);font-size:11px;color:var(--m1)">'+cN+'</div></div>':'') +
+    '<div style="display:flex;gap:6px;align-items:flex-end">' +
+    '<textarea class="inp" id="exn_'+ei+'" rows="2" placeholder="Add a note about this exercise..." style="flex:1;min-height:36px">' + cN + '</textarea>' +
+    '<button class="btn btn-accent btn-sm" onclick="doSaveExNote('+ei+')">✓</button></div></div>';
+}
+
+function renderSessionNoteBox() {
+  var k = sessKey(S.week, S.day);
+  var sn = S.sessNotes[k] || {};
+  var tN = sn.trainer||'';var cN = sn.client||'';
+  return '<div class="card" style="margin-top:14px"><div class="card-body">' +
+    '<div style="font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--m1);margin-bottom:10px;text-transform:uppercase">📋 Session Notes</div>' +
+    (tN?'<div style="margin-bottom:10px"><div class="lbl" style="color:var(--blue)">AHMED'S FEEDBACK</div><div style="padding:8px 10px;background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.15);border-radius:9px;font-size:11px;color:var(--m1);line-height:1.6">' + tN + '</div></div>':'') +
+    '<div class="lbl" style="color:var(--green)">YOUR SESSION NOTES</div>' +
+    '<textarea class="inp" id="sn_inp" rows="3" placeholder="How did the session go? Any wins or struggles?" style="min-height:60px;margin-bottom:8px">' + cN + '</textarea>' +
+    '<button class="btn btn-green btn-sm" onclick="doSaveSessionNote()">Save ✓</button>' +
+    '</div></div>';
+}
+
+// ═══════════════════════════════════════════
+// CLIENT: PROGRESS
+// ═══════════════════════════════════════════
+function renderProgress() {
+  var d14 = getLast14();
+  var prs = Object.values(S.prs);
+  var pd = buildProgressDataClient();
+  return '<div class="hdr"><div class="hdr-top">' +
+    '<div><div class="hdr-sub">My Progress</div><div class="hdr-title">Progress</div></div>' +
+    (S.streak.cur>0?'<span class="pill pill-amber">🔥 '+S.streak.cur+'</span>':'') +
+    '</div></div><div class="page">' +
+    // Streak
+    '<div class="card" style="background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(239,68,68,.05));border-color:rgba(245,158,11,.2)">' +
+    '<div class="card-body">' +
+    '<div style="display:flex;gap:28px;margin-bottom:14px">' +
+    '<div><div style="font-size:40px;font-weight:900;color:var(--amber);line-height:1">' + S.streak.cur + '</div><div style="font-size:9px;color:var(--m1);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Current 🔥</div></div>' +
+    '<div><div style="font-size:40px;font-weight:900;color:var(--amber);line-height:1">' + S.streak.best + '</div><div style="font-size:9px;color:var(--m1);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Best 🏆</div></div>' +
+    '</div>' +
+    '<div style="font-size:10px;color:var(--m1);margin-bottom:8px;font-weight:600;letter-spacing:1px">LAST 14 DAYS</div>' +
+    '<div class="streak-grid">' + d14.map(function(d) {
+      var isT = d===today(), had=hadSession(d)||(S.streak.lastDate===d);
+      return '<div class="sday '+(isT?'today':had?'done':'miss')+'">' +
+        '<div style="font-size:7px;color:var(--m1)">' + new Date(d+'T12:00:00').toLocaleDateString('en-GB',{weekday:'short'}).slice(0,1) + '</div>' +
+        '<div style="font-size:12px">' + (isT?'📍':had?'✅':'·') + '</div>' +
+        '<div style="font-size:7px;color:var(--m2)">' + new Date(d+'T12:00:00').getDate() + '</div></div>';
+    }).join('') + '</div></div></div>' +
+    // PRs
+    (prs.length?'<div class="sect">🏆 PERSONAL RECORDS</div>' + prs.map(function(pr){
+      return '<div class="card"><div class="card-body" style="display:flex;justify-content:space-between;align-items:center">' +
+        '<div><div style="font-weight:600;font-size:13px;color:#fff">' + pr.exName + '</div>' +
+        '<div style="font-size:10px;color:var(--m1)">' + fmtDate(pr.date) + '</div></div>' +
+        '<div style="text-align:right"><div style="font-size:15px;font-weight:800;color:var(--amber)">' + pr.weight + S.unit + ' × ' + pr.reps + '</div>' +
+        '<div style="font-size:10px;color:var(--m2)">~' + Math.round(pr.est) + S.unit + ' est 1RM</div></div></div></div>';
+    }).join(''):'') +
+    '<div class="sect">📈 WEIGHT PROGRESSION</div>' +
+    (pd.length===0?'<div class="empty">Log sessions to see progress.</div>':pd.map(function(p){return renderProgressBar(p,S.unit);}).join('')) +
+    renderHistoryLog() +
+    '</div>' + clientNav();
+}
+
+function buildProgressDataClient() {
+  var ex = {};
+  var progs = getPrograms();
+  Object.keys(S.logs).forEach(function(key) {
+    var l = S.logs[key]; if (!l||!l.done||!l.weight) return;
+    var p = key.split('_');
+    var w=parseInt(p[0].replace('w','')),d=parseInt(p[1].replace('d','')),ei=parseInt(p[2].replace('e',''));
+    var exName = l.exName;
+    if (!exName) {
+      for (var pi=0;pi<progs.length;pi++){
+        var prog=progs[pi];
+        if(prog.days&&prog.days[d]&&prog.days[d].ex&&prog.days[d].ex[ei]){exName=prog.days[d].ex[ei].n;break;}
+      }
+    }
+    if (!exName) return;
+    var k = exName.replace(/[^a-zA-Z0-9]/g,'_');
+    if (!ex[k]) ex[k]={name:exName,bw:{}};
+    var wt=parseFloat(l.weight)||0;
+    if(!ex[k].bw[w]||wt>ex[k].bw[w])ex[k].bw[w]=wt;
+  });
+  return Object.values(ex).filter(function(e){return Object.keys(e.bw).length>0;});
+}
+
+function renderHistoryLog() {
+  var ss = {};
+  Object.keys(S.logs).forEach(function(k) {
+    var l=S.logs[k]; if(!l||!l.done)return;
+    var p=k.split('_');
+    var sk2=p[0]+'_'+p[1];
+    if(!ss[sk2])ss[sk2]={w:p[0],d:p[1],sets:0,exs:{}};
+    ss[sk2].sets++;ss[sk2].exs[p[2]]=1;
+  });
+  var entries = Object.entries(ss);
+  if (!entries.length) return '';
+  return '<div class="sect">📋 HISTORY</div>' +
+    entries.reverse().slice(0,8).map(function(entry) {
+      var s=entry[1];
+      var dn=parseInt(s.d.replace('d',''));
+      var wn=parseInt(s.w.replace('w',''));
+      var prog=getCurrentProg();
+      var di=prog&&prog.days?prog.days[dn]:null;
+      var sn=S.sessNotes[s.w+'_'+s.d];
+      return '<div class="card"><div class="card-body">' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
+        '<div style="font-weight:700;font-size:13px;color:#fff">' + (di?di.title:'Session') + '</div>' +
+        '<div style="text-align:right"><div style="font-size:11px;font-weight:700;color:' + (di?di.accent||'var(--acc)':'var(--acc)') + '">Week '+wn+'</div>' +
+        '<div style="font-size:10px;color:var(--m1)">' + s.sets + ' sets · ' + Object.keys(s.exs).length + ' exercises</div></div></div>' +
+        (sn&&sn.client?'<div style="font-size:11px;color:var(--m1);padding:6px 9px;background:rgba(16,185,129,.05);border-radius:7px;border-left:2px solid var(--green)">"'+sn.client+'"</div>':'') +
+        (sn&&sn.trainer?'<div style="font-size:11px;color:var(--m1);padding:6px 9px;background:rgba(99,102,241,.05);border-radius:7px;border-left:2px solid var(--acc);margin-top:4px">Ahmed: '+sn.trainer+'</div>':'') +
+        '</div></div>';
+    }).join('');
+}
+
+// ═══════════════════════════════════════════
+// CLIENT: MY SESSIONS
+// ═══════════════════════════════════════════
+function renderMySessions() {
+  return '<div class="hdr"><div class="hdr-top"><div><div class="hdr-sub">My Schedule</div><div class="hdr-title">Sessions</div></div></div></div>' +
+    '<div class="page" id="sess_page">' +
+    '<div class="empty">Loading your sessions...</div>' +
+    '</div>' + clientNav();
+}
+
+// Load sessions after render
+function loadMySessions() {
+  var page = document.getElementById('sess_page');
+  if (!page) return;
+  fbGet('clients/' + S.cid + '/sessions', function(data) {
+    var sessions = data ? Object.values(data).sort(function(a,b){return (a.date||'').localeCompare(b.date||'');}) : [];
+    var upcoming = sessions.filter(function(s){return s.status==='upcoming';});
+    var done = sessions.filter(function(s){return s.status==='done';});
+    page.innerHTML = (upcoming.length>0?
+      '<div class="sect">UPCOMING</div>' + upcoming.map(function(s){
+        return '<div class="card" style="margin-bottom:8px"><div class="card-body" style="display:flex;align-items:center;gap:12px">' +
+          '<div class="sess-time"><div class="sess-time-h">' + (s.time||'TBD') + '</div><div class="sess-time-d">' + fmtDate(s.date) + '</div></div>' +
+          '<div class="sess-dot" style="background:' + (s.type==='online'?'#6366f1':'#10b981') + '"></div>' +
+          '<div class="sess-info"><div class="sess-name">' + (s.type==='online'?'🌐 Online':'🏋️ In Person') + '</div>' +
+          (s.note?'<div class="sess-meta">' + s.note + '</div>':'') + '</div></div></div>';
+      }).join(''):'') +
+    (done.length>0?
+      '<div class="sect">COMPLETED</div>' + done.slice(0,5).map(function(s){
+        return '<div class="card" style="margin-bottom:6px;opacity:.6"><div class="card-body" style="display:flex;align-items:center;gap:10px">' +
+          '<div class="sess-time"><div class="sess-time-h" style="color:var(--m2)">' + fmtDate(s.date) + '</div></div>' +
+          '<div class="sess-dot" style="background:var(--m3)"></div>' +
+          '<div class="sess-info"><div style="font-size:12px;color:var(--m2)">✓ ' + (s.type==='online'?'Online':'In Person') + '</div></div></div></div>';
+      }).join(''):'') +
+    (sessions.length===0?'<div class="empty">No sessions booked yet.<br>Ahmed will schedule these for you.</div>':'');
+  });
+}
+
+// ═══════════════════════════════════════════
+// CLIENT: MY ACCOUNT
+// ═══════════════════════════════════════════
+function renderMyAccount() {
+  return '<div class="hdr"><div class="hdr-top"><div><div class="hdr-sub">My Account</div><div class="hdr-title">Account</div></div></div></div>' +
+    '<div class="page" id="acct_page">' +
+    '<div class="big-balance"><div class="bal-num" style="color:var(--green)">-</div>' +
+    '<div class="bal-lbl">Sessions Remaining</div><div class="bal-msg" id="bal_msg">Loading...</div></div>' +
+    '<div id="next_sess"></div>' +
+    '<div class="sect">PAYMENT RECEIPTS</div>' +
+    '<div id="pay_list"><div class="empty">Loading...</div></div>' +
+    '</div>' + clientNav();
+}
+
+function loadMyAccount() {
+  fbGet('clients/' + S.cid + '/balance', function(bal) {
+    var balEl = document.querySelector('#acct_page .bal-num');
+    var msgEl = document.getElementById('bal_msg');
+    if (!balEl) return;
+    bal = bal || 0;
+    balEl.textContent = bal;
+    balEl.style.color = bal===0?'var(--red)':bal<=2?'var(--amber)':'var(--green)';
+    if (msgEl) {
+      if (bal === 0) msgEl.textContent = '⚠️ No sessions left - please arrange payment with Ahmed';
+      else if (bal <= 2) msgEl.textContent = '⚠️ Only ' + bal + ' session' + (bal===1?'':'s') + ' left - time to top up';
+      else msgEl.textContent = 'You have ' + bal + ' session' + (bal===1?'':'s') + ' with Ahmed';
+    }
+  });
+  fbGet('clients/' + S.cid + '/sessions', function(data) {
+    var nextEl = document.getElementById('next_sess');
+    if (!nextEl) return;
+    var sessions = data ? Object.values(data).filter(function(s){return s.status==='upcoming';}).sort(function(a,b){return (a.date||'').localeCompare(b.date||'');}) : [];
+    if (sessions.length > 0) {
+      var s = sessions[0];
+      nextEl.innerHTML = '<div style="padding:14px;background:rgba(236,72,153,.06);border:1px solid rgba(236,72,153,.15);border-radius:14px;text-align:center;margin-bottom:14px">' +
+        '<div style="font-size:10px;color:var(--pink);font-weight:700;letter-spacing:1px;margin-bottom:6px">NEXT SESSION</div>' +
+        '<div style="font-size:20px;font-weight:800;color:#fff">' + fmtDate(s.date) + (s.time?' at '+s.time:'') + '</div>' +
+        '<div style="font-size:12px;color:var(--m1);margin-top:4px">' + (s.type==='online'?'🌐 Online':'🏋️ In Person') + (s.note?' · '+s.note:'') + '</div></div>';
+    }
+  });
+  fbGet('clients/' + S.cid + '/payments', function(data) {
+    var payEl = document.getElementById('pay_list');
+    if (!payEl) return;
+    var pays = data ? Object.values(data).sort(function(a,b){return b.ts-a.ts;}) : [];
+    if (pays.length === 0) { payEl.innerHTML = '<div class="empty">No payment receipts yet.</div>'; return; }
+    payEl.innerHTML = '<div class="card"><div class="card-body">' +
+      pays.map(function(p){
+        return '<div class="pay-item">' +
+          '<div><div style="font-size:14px;font-weight:800;color:var(--green)">' + p.sessions + ' session' + (p.sessions===1?'':'s') + ' added</div>' +
+          '<div style="font-size:10px;color:var(--m1)">' + fmtDate(p.date) + (p.note?' · '+p.note:'') + '</div></div></div>';
+      }).join('') + '</div></div>';
+  });
+}
+
+// ═══════════════════════════════════════════
+// CLIENT: MESSAGES
+// ═══════════════════════════════════════════
+function renderMessages() {
+  markMessagesRead(S.cid, 'client');
+  return '<div class="hdr"><div class="hdr-top"><div><div class="hdr-sub">Chat</div><div class="hdr-title">Ahmed</div></div></div></div>' +
+    '<div class="page">' +
+    '<div class="chat-wrap" id="msgList">' +
+    (S.msgs.length===0?'<div class="empty">No messages yet.<br>Ahmed's replies appear here instantly.</div>':'') +
+    S.msgs.map(function(m) {
+      var isMe = m.from==='client';
+      return '<div class="chat-msg ' + (isMe?'from-me':'from-them') + '">' +
+        '<div class="bubble">' + m.text + '</div>' +
+        '<div class="chat-time">' + (isMe?'You':'Ahmed') + ' · ' + fmtTime(m.ts) + '</div></div>';
+    }).join('') + '</div>' +
+    '<div class="chat-input">' +
+    '<textarea class="chat-ta" id="cl_msg" placeholder="Message Ahmed..." rows="1"></textarea>' +
+    '<button class="chat-send" onclick="doSendClientMsg()">➤</button></div>' +
+    '</div>' + clientNav();
+}
+
+function doSendClientMsg() {
+  var ta = document.getElementById('cl_msg');
+  if (!ta || !ta.value.trim()) return;
+  sendMessage(ta.value, 'client', null);
+  ta.value = '';
+  R();
+}
+
+// ═══════════════════════════════════════════
+// WORKOUT ACTIONS
+// ═══════════════════════════════════════════
+function setWeek(w) {
+  S.week = w; S.aSet = null;
+  var cp = DB.get('cp_' + S.cid) || {};
+  cp.week = w; DB.set('cp_' + S.cid, cp);
+  if (fbReady) fbUpd('clients/' + S.cid + '/meta', {week: w});
+  R();
+}
+function setUnit(u) {
+  S.unit = u;
+  var cp = DB.get('cp_' + S.cid) || {};
+  cp.unit = u; DB.set('cp_' + S.cid, cp);
+  if (fbReady) fbUpd('clients/' + S.cid + '/meta', {unit: u});
+  R();
+}
+function selDay(i) { S.day=i; S.aSet=null; S.cTab='workout'; R(); }
+function toggleExNote(ei) { S.xNote=(S.xNote===ei?-1:ei); R(); }
+function toggleAlt(ei) { S.xAlt=(S.xAlt===ei?-1:ei); R(); }
+function swapEx(ei, idx) { S.swaps[S.day+'_'+ei]=idx; S.xAlt=-1; R(); }
+function openSet(ei, si) {
+  if (S.aSet&&S.aSet.ei===ei&&S.aSet.si===si) { S.aSet=null; S.rpe=null; }
+  else { S.aSet={ei:ei,si:si}; var lg=getLog(S.week,S.day,ei,si); S.rpe=lg?lg.rpe:null; }
+  R();
+  setTimeout(function(){var el=document.getElementById('exc_'+ei);if(el){var lp=el.querySelector('.lpanel');if(lp)lp.scrollIntoView({behavior:'smooth',block:'nearest'});}},60);
+}
+function openYouTube(exName) {
+  window.open('https://www.youtube.com/results?search_query=' + exName + '+exercise+form+tutorial', '_blank');
+}
+function doLogSet(ei, si) {
+  var w = (document.getElementById('inp_w')||{}).value;
+  var r = (document.getElementById('inp_r')||{}).value;
+  saveLog(ei, si, w, r, S.rpe);
+  S.aSet = null; S.rpe = null;
+  var d = getDay();
+  if (d) {
+    var sc = d.ex[ei] ? d.ex[ei].sets||3 : 3;
+    R();
+    if (si+1 < sc) setTimeout(function(){openSet(ei,si+1);},150);
+  } else R();
+}
+function doClearSet(ei, si) { deleteLog(ei, si); S.aSet=null; S.rpe=null; R(); }
+function doSaveExNote(ei) {
+  var ta = document.getElementById('exn_'+ei);
+  if (!ta) return;
+  saveExNote(ei, ta.value, 'client');
+  R();
+}
+function doSaveSessionNote() {
+  var ta = document.getElementById('sn_inp');
+  if (!ta) return;
+  saveSessNote(ta.value, 'client');
+  var btn = ta.nextElementSibling;
+  if (btn) { btn.textContent='✓ Saved!'; setTimeout(function(){btn.textContent='Save ✓';},2000); }
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+function init() {
+  // Render immediately from localStorage - no waiting
+  var sess = DB.get('sess');
+  if (sess && sess.role === 'trainer') {
+    S.role='trainer'; S.scr='trainer'; S.tTab='dashboard';
+    S.clients = DB.get('tc') || {};
+  } else if (sess && sess.role === 'client' && sess.cid) {
+    var cp = DB.get('cp_' + sess.cid);
+    if (cp) {
+      S.role='client'; S.scr='client'; S.cid=sess.cid;
+      S.unit=cp.unit||'kg'; S.week=cp.week||1;
+      S.logs=DB.get('logs_'+sess.cid)||{};
+      S.exNotes=DB.get('exnotes_'+sess.cid)||{};
+      S.sessNotes=DB.get('sessnotes_'+sess.cid)||{};
+      S.msgs=DB.get('msgs_'+sess.cid)||[];
+      S.streak=DB.get('streak_'+sess.cid)||{cur:0,best:0,lastDate:null};
+      S.prs=DB.get('prs_'+sess.cid)||{};
+    } else {
+      S.scr='login';
+    }
+  } else {
+    S.scr='login';
+  }
+  R();
+
+  // Load sessions/account data after render
+  if (S.scr==='client') {
+    setTimeout(function(){
+      if(S.cTab==='sessions')loadMySessions();
+      if(S.cTab==='account')loadMyAccount();
+    },100);
+  }
+
+  // Load Firebase in background - won't block anything
+  setTimeout(loadFirebase, 200);
+}
+
+// Load sessions/account when switching tabs
+// Run immediately if DOM ready, else on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
